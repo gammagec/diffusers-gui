@@ -5,7 +5,8 @@ from . import View
 from ...common import bind_enabled_to_intvar, bind_enabled_to_value_observer
 
 class Button(View):
-
+	name = 'button'
+		
 	def __init__(self, var, handler, layout_options = None, enabled_value = None):
 
 		super().__init__(layout_options)

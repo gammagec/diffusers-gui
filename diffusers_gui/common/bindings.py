@@ -3,8 +3,8 @@ from tkinter import DISABLED, NORMAL, END, INSERT
 
 def bind_enabled_to_value_observer(obj, val_obs, widget):	
 	def on_enabled(enabled):
-		widget.configure(state = NORMAL if enabled else DISABLED)
-	on_enabled(val_obs.get_value())
+		print(f'val obs enabled {enabled}')
+		widget.configure(state = NORMAL if enabled else DISABLED)	
 	val_obs.register(obj, lambda enabled: on_enabled(enabled))
 
 def bind_enabled_to_intvar(widget, var):	

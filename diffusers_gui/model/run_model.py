@@ -10,8 +10,6 @@ class RunModel:
 		self.channels = 4
 		self.width = 512
 		self.height = 512
-		self.ckpt = ''
-		self.config = ''
 		self.ddim_eta = 0.0
 		self.ddim_steps = 50
 		self.device = 'cuda'
@@ -38,7 +36,7 @@ class RunModel:
 		self.update_run_model_subject = Subject()		
 		self.selection_model = app_context.selection_model
 
-		self.selection_model.run_selected.register(self, lambda: self.on_run_selected())
+		self.selection_model.run_selected.register(self, lambda _: self.on_run_selected())
 
 	def on_run_selected(self):
 		run = self.selection_model.selected_run
@@ -53,8 +51,6 @@ class RunModel:
 					self.channels = config.channels
 					self.width = config.width
 					self.height = config.height
-					self.ckpt = config.ckpt
-					self.config = config.config
 					self.ddim_eta = config.ddim_eta
 					self.ddim_steps = config.ddim_steps					
 					self.f = config.f

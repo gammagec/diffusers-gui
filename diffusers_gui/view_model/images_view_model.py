@@ -2,7 +2,7 @@ class ImagesViewModel:
 
 	def __init__(self, model, app_context):
 		self.model = model
-		model.update_images_subject.register(self, lambda: self.update_images())
+		model.update_images_subject.register(self, lambda _: self.update_images())
 
 	def set_view(self, view):
 		self.view = view

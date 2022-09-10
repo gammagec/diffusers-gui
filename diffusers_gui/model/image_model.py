@@ -11,13 +11,12 @@ class ImageModel(object):
 
 	def __init__(self, app_context):
 		self.selection_model = app_context.selection_model
-		self.image_loaded = ValueSubject(False)
 		self.images_model = app_context.images_model
-		self.image = None
+		self.image = ValueSubject(None)
 		self.copy_seed_value = Subject()
 		self.use_image_value = Subject()		
 
-		self.selection_model.image_selected.register(self, lambda: self.load_image())
+		self.selection_model.image_selected.register(self, lambda _: self.load_image())
 
 	def open(self):
 		path = self.get_image_path()
@@ -42,7 +41,7 @@ class ImageModel(object):
 		path = self.get_image_path()		
 		if (path != None):						
 			print(f'copying image {path}')
-			image = Image.open(path)
+			image = self.image.get_value().copy()
 			output = BytesIO()
 			image.convert("RGB").save(output, "BMP")
 			data = output.getvalue()[14:]
@@ -59,9 +58,7 @@ class ImageModel(object):
 		path = self.get_image_path()
 		print(f'load image for {path}')
 		if (path == None):
-			self.image = None
-			self.image_loaded.set_value(False)
+			self.image.set_value(None)
 		else:			
 			print(f'loading image {path}')
-			self.image = self.get_processed_image(Image.open(path))
-			self.image_loaded.set_value(True)
+			self.image.set_value(self.get_processed_image(Image.open(path)))

@@ -1,7 +1,7 @@
 class RunInfoViewModel:
 	def __init__(self, model, app_context):
 		self.model = model
-		model.update_run_model_subject.register(self, lambda: self.update_run())
+		model.update_run_model_subject.register(self, lambda _: self.update_run())
 
 	def set_view(self, view):
 		self.view = view
@@ -14,9 +14,7 @@ class RunInfoViewModel:
 				f'prompt: {model.prompt}\n'
 				f'size: {model.width}x{model.height}\n'
 				f'ddim_eta: {model.ddim_eta}, ddim_steps: {model.ddim_steps}\n'
-				f'n_iter: {model.n_iter}, n_samples: {model.n_samples}\n'
-				f'ckpt: {model.ckpt}\n'
-				f'config: {model.config}\n'
+				f'n_iter: {model.n_iter}, n_samples: {model.n_samples}\n'								
 				f'device: {model.device}, fixed_code: {model.fixed_code}\n'
 				f'from_file: {model.from_file}\n'
 				f'f: {model.f}, half: {model.half}\n'

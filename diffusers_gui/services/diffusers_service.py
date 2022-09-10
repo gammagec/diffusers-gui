@@ -24,7 +24,7 @@ class DiffusersService:
 		self.img2img_pipe = None
 		self.inpaint_pipe = None
 
-	def run_txt2img(self, out_dir, seed, ckpt, config,
+	def run_txt2img(self, out_dir, seed, 
 		ddim_steps, n_samples, n_iter, prompt, ddim_eta, H, W,
 		C, f, scale, session_name, after_run, device = "cuda", precision = "autocast"):
 		print('Run txt2img!')
@@ -45,7 +45,7 @@ class DiffusersService:
 		after_run()
 
 
-	def run_img2img(self, out_dir, seed, ckpt, config,
+	def run_img2img(self, out_dir, seed,
 		ddim_steps, n_samples, n_iter, prompt, ddim_eta, H, W,
 		C, f, scale, init_img, 
 		strength, session_name, after_run, device = "cuda",  precision = "autocast"):
@@ -69,7 +69,7 @@ class DiffusersService:
 		image.save(path)
 		after_run()
 
-	def run_inpaint(self, out_dir, seed, ckpt, config,
+	def run_inpaint(self, out_dir, seed,
 		ddim_steps, n_samples, n_iter, prompt, ddim_eta, H, W,
 		C, f, scale, init_img,
 		strength, mask_img, session_name, after_run, device = "cuda",  precision = "autocast"):

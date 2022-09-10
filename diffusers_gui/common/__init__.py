@@ -1,4 +1,6 @@
 from .subject import Subject
+from .map import Map
+from .tap import Tap
 from .value_subject import ValueSubject
 from .namespace import Namespace
 from .and_observer import AndObserver

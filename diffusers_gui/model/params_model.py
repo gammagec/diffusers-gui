@@ -36,8 +36,8 @@ class ParamsModel:
 		self.config = app_context.config
 		self.diffusers_service = app_context.diffusers_service
 
-		self.image_model.copy_seed_value.register(self, lambda: self.on_copy_seed())
-		self.image_model.use_image_value.register(self, lambda: self.on_use_image())
+		self.image_model.copy_seed_value.register(self, lambda _: self.on_copy_seed())
+		self.image_model.use_image_value.register(self, lambda _: self.on_use_image())
 
 	def on_copy_seed(self):
 		img = self.selection_model.selected_image
@@ -77,8 +77,6 @@ class ParamsModel:
 		with open(config_path, 'w') as file:
 			yaml.dump(Namespace(
 				seed = self.seed,
-				ckpt = self.config.ckpt_loc,
-				config = self.config.config_file,
 				ddim_steps = self.ddim_steps,
 				n_samples = self.n_samples,
 				n_iter = self.n_iter,
@@ -99,8 +97,6 @@ class ParamsModel:
 			self.diffusers_service.run_txt2img(
 				run_path, 
 				self.seed, 
-				self.config.ckpt_loc, 
-				self.config.config_file, 
 				self.ddim_steps, 
 				self.n_samples,
 				self.n_iter, 
@@ -117,8 +113,6 @@ class ParamsModel:
 			self.diffusers_service.run_inpaint(
 				run_path, 
 				self.seed, 
-				self.config.ckpt_loc, 
-				self.config.config_file, 
 				self.ddim_steps, 
 				self.n_samples,
 				self.n_iter, 
@@ -138,8 +132,6 @@ class ParamsModel:
 			self.diffusers_service.run_img2img(
 				run_path, 
 				self.seed, 
-				self.config.ckpt_loc, 
-				self.config.config_file, 
 				self.ddim_steps, 
 				self.n_samples,
 				self.n_iter, 
