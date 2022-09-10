@@ -1,0 +1,6 @@
+**/__pycache__/**
+dist
+output
+src
+stable-diffusion-v1-4
+diffusers_gui.egg-info
