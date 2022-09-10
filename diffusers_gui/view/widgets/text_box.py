@@ -4,7 +4,7 @@ from . import View
 
 from ...common import bind_enabled_to_intvar
 
-class EntryView(View):
+class TextBox(View):
 
 	def __init__(self, var, layout_options = None, enabled_intvar = None):
 		super().__init__(layout_options)

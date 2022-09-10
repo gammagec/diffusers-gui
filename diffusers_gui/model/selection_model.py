@@ -5,11 +5,11 @@ class SelectionModel:
 	name = 'selection_model'
 
 	def __init__(self, app_context):
-		self.selected_session = ValueSubject('selected_session', None)
+		self.selected_session = ValueSubject(None)
 		self.selected_run = None
 		self.selected_image = None
-		self.run_selected = Subject('run_selected')
-		self.image_selected = Subject('image_selected')
+		self.run_selected = Subject()
+		self.image_selected = Subject()
 
 	def set_selected_run(self, run):
 		print(f'run set {run}')

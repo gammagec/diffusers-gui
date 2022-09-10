@@ -1,9 +1,9 @@
-from tkinter import Label, Frame, X, END
+from tkinter import Frame, X, END
 
-from .widgets import ContainerView, LabelView, ListBoxView
+from .widgets import Composite, Label, ListBox
 from .layout import pack_layout_options
 
-class RunsView(ContainerView):
+class RunsView(Composite):
 	name = 'runs_view'
 
 	def __init__(self, view_model):
@@ -14,9 +14,9 @@ class RunsView(ContainerView):
 	def create(self, parent):
 		super().create(parent)
 		
-		self.add_child(LabelView(var = "Runs"))
+		self.add_child(Label(var = "Runs"))
 		
-		self.runs_list = ListBoxView(
+		self.runs_list = ListBox(
 			lambda evt: self.view_model.on_run_select(
 				self.runs_list.get_selected_value()), 
 			layout_options = pack_layout_options(fill = X))		

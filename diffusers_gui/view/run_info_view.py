@@ -1,8 +1,8 @@
 from tkinter import StringVar, DISABLED
 
-from .widgets import ContainerView, LabelView, ScrolledTextView
+from .widgets import Composite, Label, ScrolledText
 
-class RunInfoView(ContainerView):
+class RunInfoView(Composite):
 	name = 'run_info_view'
 
 	def __init__(self, view_model):
@@ -13,8 +13,8 @@ class RunInfoView(ContainerView):
 		
 	def create(self, parent):		
 		super().create(parent)
-		self.add_child(LabelView(var = "Selected Run"))
-		text_view = ScrolledTextView(var = self.text)
+		self.add_child(Label(var = "Selected Run"))
+		text_view = ScrolledText(var = self.text)
 		self.add_child(text_view)
 		text_view.disable()
 		text_view.bind_stringvar_to_scrolled_text()

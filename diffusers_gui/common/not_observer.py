@@ -1,8 +1,8 @@
 from . import ValueSubject
 
 class NotObserver(ValueSubject):
-	def __init__(self, name, subject):		
-		super().__init__(name, not subject.get_value())
+	def __init__(self, subject):		
+		super().__init__(not subject.get_value())
 		self.subject = subject
 
 		subject.register(self, lambda value: self.on_change())

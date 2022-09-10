@@ -1,10 +1,10 @@
 from tkinter import LEFT, StringVar
 from tkinter import filedialog
 
-from . import EntryView, ButtonView, ContainerView
+from . import TextBox, Button, Composite
 from ..layout import RowLayout
 
-class LoadFileView(ContainerView):
+class LoadFileView(Composite):
 	name = 'load_file_view'
 
 	def __init__(self, var, layout_options = None):
@@ -16,13 +16,13 @@ class LoadFileView(ContainerView):
 	def create(self, parent):
 		super().create(parent)
 		
-		entry = EntryView(var = self.val)
+		entry = TextBox(var = self.val)
 		self.add_child(entry)
 
-		button = ButtonView(var = 'Load', handler = lambda: self.load())
+		button = Button(var = 'Load', handler = lambda: self.load())
 		self.add_child(button)
 
-		clear_button = ButtonView(var = 'Clear', handler = lambda: self.var.set(''))
+		clear_button = Button(var = 'Clear', handler = lambda: self.var.set(''))
 		self.add_child(clear_button)
 
 	def load(self):

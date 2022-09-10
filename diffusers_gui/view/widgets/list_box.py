@@ -1,9 +1,10 @@
-from tkinter import Listbox, SINGLE, END
+from tkinter import Listbox as TkListBox, SINGLE, END
 
 from . import View
 
 def create_list_box(parent, select_command, listvariable = None):
-	listbox = Listbox(parent, selectmode = SINGLE, exportselection = 0, listvariable = listvariable)
+	listbox = TkListBox(parent, selectmode = SINGLE, 
+		exportselection = 0, listvariable = listvariable)
 	listbox.bind('<<ListboxSelect>>', select_command)
 
 	def on_arrow_up(evt):
@@ -24,7 +25,7 @@ def create_list_box(parent, select_command, listvariable = None):
 	listbox.bind('<Up>', on_arrow_up)
 	return listbox
 
-class ListBoxView(View):
+class ListBox(View):
 
 	def __init__(self, on_select, var = None, layout_options = None):
 		super().__init__(layout_options)

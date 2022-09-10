@@ -22,7 +22,8 @@ class ParamsViewModel(object):
 		self.prompt = StringVar()
 
 		self.run_enabled = NotObserver(
-			'', EqualsObserver('', app_context.selection_model.selected_session, None))
+			EqualsObserver(app_context.selection_model.selected_session, None)
+		)
 
 		model.seed_changed.register(self, lambda: self.seed_changed())
 		model.init_image.register(self, lambda val: self.on_update_init_image(val))			

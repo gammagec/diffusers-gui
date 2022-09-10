@@ -24,15 +24,15 @@ class ParamsModel:
 		self.channels = 4
 		self.downsampling = 8
 		self.scale = 7.5
-		self.init_image = ValueSubject('init_image', None)
+		self.init_image = ValueSubject(None)
 		self.strength = 0.3		
 		self.selection_model = app_context.selection_model
 		self.config = app_context.config
-		self.mask = ValueSubject('mask', None)
+		self.mask = ValueSubject(None)
 
 		self.runs_model = app_context.runs_model
 		self.image_model = app_context.image_model
-		self.seed_changed = Subject('seed-changed')
+		self.seed_changed = Subject()
 		self.config = app_context.config
 		self.diffusers_service = app_context.diffusers_service
 

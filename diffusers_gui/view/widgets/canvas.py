@@ -1,8 +1,8 @@
-from tkinter import Canvas, NW
+from tkinter import Canvas as TkCanvas, NW
 
 from . import View
 
-class CanvasView(View):
+class Canvas(View):
 
 	def __init__(self, width, height):
 		super().__init__()
@@ -11,7 +11,7 @@ class CanvasView(View):
 
 	def create(self, parent):
 		super().create()
-		self.canvas = Canvas(parent, width = self.width, height = self.height)
+		self.canvas = TkCanvas(parent, width = self.width, height = self.height)
 
 	def get_frame(self):
 		return self.canvas

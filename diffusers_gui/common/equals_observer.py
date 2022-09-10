@@ -1,8 +1,8 @@
 from . import ValueSubject
 
 class EqualsObserver(ValueSubject):
-	def __init__(self, name, subject, expect):		
-		super().__init__(name, subject.get_value() == expect)
+	def __init__(self, subject, expect):		
+		super().__init__(subject.get_value() == expect)
 		self.subject = subject
 		self.expect = expect
 

@@ -35,7 +35,7 @@ class RunModel:
 		self.strength = 0.3
 		self.small_batch = False
 		self.runs_model = app_context.runs_model
-		self.update_run_model_subject = Subject('update_run_model')		
+		self.update_run_model_subject = Subject()		
 		self.selection_model = app_context.selection_model
 
 		self.selection_model.run_selected.register(self, lambda: self.on_run_selected())

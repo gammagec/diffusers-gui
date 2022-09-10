@@ -1,9 +1,9 @@
-from tkinter import Frame, Label, END, X
+from tkinter import Frame, END, X
 
-from .widgets import ListBoxView, ContainerView, LabelView
+from .widgets import ListBox, Composite, Label
 from .layout import pack_layout_options
 
-class ImagesView(ContainerView):
+class ImagesView(Composite):
 	name = 'images_view'
 
 	def __init__(self, view_model, layout_options = None):
@@ -23,9 +23,9 @@ class ImagesView(ContainerView):
 	def create(self, parent):
 		super().create(parent)
 
-		self.add_child(LabelView(var = "Images"))
+		self.add_child(Label(var = "Images"))
 		
-		self.images_list = ListBoxView(lambda evt: self.on_image_select(evt), 
+		self.images_list = ListBox(lambda evt: self.on_image_select(evt), 
 			layout_options = pack_layout_options(fill = X))		
 		self.add_child(self.images_list)					
 

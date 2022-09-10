@@ -2,7 +2,7 @@ from tkinter import Frame
 
 from . import View
 
-class ContainerView(View):	
+class Composite(View):	
 	def __init__(self, layout_manager = None, layout_options = None):
 		super().__init__(layout_options)
 		self.name = 'container view'
@@ -32,7 +32,7 @@ class ContainerView(View):
 		for child in self.children:
 			if not child.is_created():
 				child.create(self.frame)
-			if isinstance(child, ContainerView):
+			if isinstance(child, Composite):
 				child.layout()
 		if self.layout_manager != None:
 			self.layout_manager.layout(self.children)

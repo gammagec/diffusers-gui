@@ -3,7 +3,7 @@ from tkinter import Tk, Frame, LEFT, X
 
 from .layout import RowLayout, pack_layout_options
 
-from .widgets import View, ContainerView
+from .widgets import View, Composite
 
 # Views
 from . import (
@@ -25,9 +25,9 @@ class MainWindow:
 		self.root.title('Stable Diffusion GUI')
 		self.root.geometry("1650x1200")
 		
-		main_view = ContainerView(RowLayout())
+		main_view = Composite(RowLayout())
 
-		main_view.add_child(ContainerView(layout_options = pack_layout_options(fill = X))			
+		main_view.add_child(Composite(layout_options = pack_layout_options(fill = X))			
 			.add_child(SessionsView(
 				SessionsViewModel(app_context.sessions_model, app_context)))
 			.add_child(RunsView(RunsViewModel(app_context.runs_model, app_context)))
@@ -36,13 +36,13 @@ class MainWindow:
 				layout_options = pack_layout_options(fill = X)))
 		)
 
-		main_view.add_child(ContainerView()		
+		main_view.add_child(Composite()		
 			.add_child(ImageView(ImageViewModel(app_context.input_image_model, app_context, 'Input Image')))
 			.add_child(SelectedImageView(ImageViewModel(
 				app_context.image_model, app_context, 'Selected Image')))
 		)
 
-		main_view.add_child(ContainerView()
+		main_view.add_child(Composite()
 			.add_child(ImageView(ImageViewModel(app_context.mask_image_model, app_context, 'Mask Image')))
 		)
 		

@@ -10,7 +10,7 @@ class SessionsModel:
 	def __init__(self, app_context):								
 		self.config = app_context.config
 		self.message_service = app_context.message_service
-		self.session_names = ValueSubject('session-names', [])
+		self.session_names = ValueSubject([])
 		self.sessions_path = ''				
 		self.selection_model = app_context.selection_model
 

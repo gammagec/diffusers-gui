@@ -8,7 +8,7 @@ class RunsModel:
 		self.runs = []
 		self.sessions_model = app_context.sessions_model
 		self.message_service = app_context.message_service		
-		self.update_runs_subject = Subject('update_runs')
+		self.update_runs_subject = Subject()
 		self.session_path = ''		
 		self.selection_model = app_context.selection_model
 		self.selection_model.selected_session.register(self, 

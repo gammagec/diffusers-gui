@@ -11,7 +11,7 @@ class ImagesModel:
 		self.runs_model = app_context.runs_model
 		self.images_path = ''
 		self.message_service = app_context.message_service
-		self.update_images_subject = Subject('update images')
+		self.update_images_subject = Subject()
 		self.selection_model = app_context.selection_model
 
 		self.selection_model.run_selected.register(self, lambda: self.on_run_selected())

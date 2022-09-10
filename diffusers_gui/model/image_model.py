@@ -11,11 +11,11 @@ class ImageModel(object):
 
 	def __init__(self, app_context):
 		self.selection_model = app_context.selection_model
-		self.image_loaded = ValueSubject('image_loaded', False)
+		self.image_loaded = ValueSubject(False)
 		self.images_model = app_context.images_model
 		self.image = None
-		self.copy_seed_value = Subject('copy-seed-value')
-		self.use_image_value = Subject('use-image-value')		
+		self.copy_seed_value = Subject()
+		self.use_image_value = Subject()		
 
 		self.selection_model.image_selected.register(self, lambda: self.load_image())
 

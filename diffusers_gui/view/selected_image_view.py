@@ -1,7 +1,7 @@
-from tkinter import Label, Frame, Canvas, NW, LEFT, DISABLED
+from tkinter import Frame, Canvas, NW, LEFT, DISABLED
 
 
-from .widgets import ButtonView
+from .widgets import Button
 from . import ImageView
 
 from ..common import bind_enabled_to_intvar
@@ -17,10 +17,10 @@ class SelectedImageView(ImageView):
 		super().create(parent)
 		buttons = super().get_buttons_view()
 
-		use_image = ButtonView("Use Image", lambda: self.view_model.use_image_clicked(),
-			enabled_intvar = self.view_model.use_button_enabled)			
+		use_image = Button("Use Image", lambda: self.view_model.use_image_clicked(),
+			enabled_value = self.view_model.use_button_enabled)			
 		buttons.add_child(use_image)
 
-		copy_seed = ButtonView("Copy Seed", lambda: self.view_model.copy_seed_clicked(),
-			enabled_intvar = self.view_model.copy_seed_button_enabled)				
+		copy_seed = Button("Copy Seed", lambda: self.view_model.copy_seed_clicked(),
+			enabled_value = self.view_model.copy_seed_button_enabled)				
 		buttons.add_child(copy_seed)		

@@ -4,7 +4,7 @@ from . import View
 
 from ...common import bind_scrolledtext_to_stringvar, bind_stringvar_to_scrolled_text
 
-class ScrolledTextView(View):
+class ScrolledText(View):
 
 	def __init__(self, var, layout_options = None):
 		super().__init__(layout_options)

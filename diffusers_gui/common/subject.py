@@ -1,6 +1,5 @@
 class Subject(object):
-	def __init__(self, name):
-		self.name = name
+	def __init__(self):
 		self.subscribers = dict()
 
 	def register(self, who, callback = None):
@@ -12,5 +11,6 @@ class Subject(object):
 	def dispatch(self):		
 		for subscriber, callback in self.subscribers.items():
 			sub_name = subscriber.name if hasattr(subscriber, 'name') else 'unknown'
-			print(f'{self.name} dispatching to {sub_name}')
+			name = self.name if hasattr(self, 'name') else 'unknown'
+			print(f'{name} dispatching to {sub_name}')
 			callback()	

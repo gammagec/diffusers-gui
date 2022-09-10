@@ -1,9 +1,9 @@
-from tkinter import Frame, Label, Button, X, END, simpledialog, messagebox, LEFT
+from tkinter import Frame, X, END, simpledialog, messagebox, LEFT
 
-from .widgets import ContainerView, LabelView, ListBoxView, ButtonView
+from .widgets import Composite, Label, ListBox, Button
 from .layout import pack_layout_options, RowLayout
 
-class SessionsView(ContainerView):
+class SessionsView(Composite):
 	name = 'session_view'
 	
 	def __init__(self, view_model):
@@ -14,9 +14,9 @@ class SessionsView(ContainerView):
 	def create(self, parent):
 		super().create(parent)
 		
-		self.add_child(LabelView(var = "Sessions"))
+		self.add_child(Label(var = "Sessions"))
 		
-		self.sessions_list = ListBoxView(
+		self.sessions_list = ListBox(
 			lambda evt: self.view_model.on_session_clicked(
 				self.sessions_list.get_selected_value()),
 				var = self.view_model.list_items,
@@ -24,10 +24,10 @@ class SessionsView(ContainerView):
 		self.add_child(self.sessions_list)
 
 		self.add_child((
-			ContainerView(RowLayout())
-			.add_child(ButtonView(var = "+", 
+			Composite(RowLayout())
+			.add_child(Button(var = "+", 
 				handler = lambda: self.view_model.on_new_session_clicked()))
-			.add_child(ButtonView(var = "-", 
+			.add_child(Button(var = "-", 
 				handler = lambda: self.view_model.on_delete_session_clicked()))
 		))
 

@@ -1,16 +1,18 @@
 from PIL import ImageTk
 from tkinter import IntVar, StringVar
 
+from ..common import ValueSubject
+
 class ImageViewModel:
 
 	def __init__(self, model, app_context, title = ''):
 		self.title = title
 		self.photo_img = None
 		self.model = model
-		self.open_button_enabled = IntVar()
-		self.copy_button_enabled = IntVar()
-		self.use_button_enabled = IntVar()
-		self.copy_seed_button_enabled = IntVar()
+		self.open_button_enabled = ValueSubject(False)
+		self.copy_button_enabled = ValueSubject(False)
+		self.use_button_enabled = ValueSubject(False)
+		self.copy_seed_button_enabled = ValueSubject(False)
 		model.image_loaded.register(self, lambda loaded: self.on_image_loaded(loaded))
 
 	def set_view(self, view):
@@ -21,17 +23,17 @@ class ImageViewModel:
 			print('rendering image')
 			self.photo_img = ImageTk.PhotoImage(self.model.image)
 			self.view.render_image(self.photo_img)	
-			self.open_button_enabled.set(True)		
-			self.copy_button_enabled.set(True)
-			self.use_button_enabled.set(True)		
-			self.copy_seed_button_enabled.set(True)
+			self.open_button_enabled.set_value(True)		
+			self.copy_button_enabled.set_value(True)
+			self.use_button_enabled.set_value(True)		
+			self.copy_seed_button_enabled.set_value(True)
 			print('image rendered')
 		else:
 			self.view.clear_image()
-			self.open_button_enabled.set(False)		
-			self.copy_button_enabled.set(False)
-			self.use_button_enabled.set(False)		
-			self.copy_seed_button_enabled.set(False)
+			self.open_button_enabled.set_value(False)		
+			self.copy_button_enabled.set_value(False)
+			self.use_button_enabled.set_value(False)		
+			self.copy_seed_button_enabled.set_value(False)
 
 	def open_clicked(self):
 		self.model.open()
