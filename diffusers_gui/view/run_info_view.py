@@ -1,6 +1,6 @@
 from tkinter import StringVar, DISABLED
 
-from . import ContainerView, LabelView, ScrolledTextView
+from .widgets import ContainerView, LabelView, ScrolledTextView
 
 class RunInfoView(ContainerView):
 	name = 'run_info_view'

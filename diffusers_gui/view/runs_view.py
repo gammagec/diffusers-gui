@@ -1,6 +1,7 @@
 from tkinter import Label, Frame, X, END
 
-from . import ContainerView, LabelView, ListBoxView, pack_layout_options
+from .widgets import ContainerView, LabelView, ListBoxView
+from .layout import pack_layout_options
 
 class RunsView(ContainerView):
 	name = 'runs_view'

@@ -1,6 +1,8 @@
 from tkinter import Label, Frame, Canvas, NW, LEFT, DISABLED
 
-from . import ImageView, ButtonView
+
+from .widgets import ButtonView
+from . import ImageView
 
 from ..common import bind_enabled_to_intvar
 

@@ -6,10 +6,12 @@ from ..common import (
 	bind_enabled_to_intvar
 )
 
-from . import (
-	ContainerView, LoadFileView, LabelView, EntryView, ButtonView, 
-	ScrolledTextView, grid_layout_options, GridLayout
+from .widgets import (
+	ContainerView, LoadFileView, LabelView, EntryView, 
+	ButtonView, ScrolledTextView
 )
+
+from .layout import grid_layout_options, GridLayout
 
 class ParamsView(ContainerView):
 	name = 'params_view'

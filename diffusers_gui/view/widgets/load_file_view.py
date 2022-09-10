@@ -1,7 +1,8 @@
 from tkinter import LEFT, StringVar
 from tkinter import filedialog
 
-from . import EntryView, ButtonView, ContainerView, RowLayout
+from . import EntryView, ButtonView, ContainerView
+from ..layout import RowLayout
 
 class LoadFileView(ContainerView):
 	name = 'load_file_view'

@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import Tk, Frame, LEFT, X
 
+from .layout import RowLayout, pack_layout_options
+
+from .widgets import View, ContainerView
+
 # Views
 from . import (
-	SessionsView, RunsView, View, ContainerView, RowLayout, 
-	RunInfoView, ImagesView, ImageView, ParamsView, SelectedImageView,
-	pack_layout_options
+	SessionsView, RunsView, RunInfoView, ImagesView, 
+	ImageView, ParamsView, SelectedImageView
 )
 
 # View Models

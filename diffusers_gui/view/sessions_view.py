@@ -1,6 +1,7 @@
 from tkinter import Frame, Label, Button, X, END, simpledialog, messagebox, LEFT
 
-from . import ContainerView, LabelView, ListBoxView, pack_layout_options, RowLayout, ButtonView
+from .widgets import ContainerView, LabelView, ListBoxView, ButtonView
+from .layout import pack_layout_options, RowLayout
 
 class SessionsView(ContainerView):
 	name = 'session_view'

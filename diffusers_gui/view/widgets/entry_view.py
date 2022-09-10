@@ -2,7 +2,7 @@ from tkinter import Entry, StringVar
 
 from . import View
 
-from ..common import bind_enabled_to_intvar
+from ...common import bind_enabled_to_intvar
 
 class EntryView(View):
 

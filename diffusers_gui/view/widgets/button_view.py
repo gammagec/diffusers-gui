@@ -2,7 +2,7 @@ from tkinter import Button, StringVar
 
 from . import View
 
-from ..common import bind_enabled_to_intvar, bind_enabled_to_value_observer
+from ...common import bind_enabled_to_intvar, bind_enabled_to_value_observer
 
 class ButtonView(View):
 

@@ -2,7 +2,7 @@ from tkinter import scrolledtext, WORD, DISABLED
 
 from . import View
 
-from ..common import bind_scrolledtext_to_stringvar, bind_stringvar_to_scrolled_text
+from ...common import bind_scrolledtext_to_stringvar, bind_stringvar_to_scrolled_text
 
 class ScrolledTextView(View):
 

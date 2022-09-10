@@ -1,6 +1,7 @@
 from tkinter import Label, Frame, Button, NW, LEFT, DISABLED, NORMAL
 
-from . import ButtonView, ContainerView, LabelView, CanvasView, RowLayout
+from .widgets import ButtonView, ContainerView, LabelView, CanvasView
+from .layout import RowLayout
 
 class ImageView(ContainerView):
 	name = 'image_view'
