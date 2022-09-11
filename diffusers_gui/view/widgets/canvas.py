@@ -7,7 +7,7 @@ class Canvas(View):
 
 	def __init__(self, image, width, height):
 		super().__init__()
-		image.register(self, lambda val: self.update_image(val))
+		image.subscribe(lambda val: self.update_image(val))
 		self.tk_image = None
 		self.width = width
 		self.height = height

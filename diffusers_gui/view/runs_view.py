@@ -1,6 +1,6 @@
 from tkinter import Frame, X, END
 
-from .widgets import Composite, Label, ListBox
+from .widgets import Composite, Label, ListBox, FIRST
 from .layout import pack_layout_options
 
 class RunsView(Composite):
@@ -19,7 +19,8 @@ class RunsView(Composite):
 		self.runs_list = ListBox(
 			lambda evt: self.view_model.on_run_select(
 				self.runs_list.get_selected_value()), 
-			layout_options = pack_layout_options(fill = X))		
+			auto_select = FIRST,
+			layout_options = pack_layout_options(fill = X))	
 		self.add_child(self.runs_list)
 
 	def clear_list(self):

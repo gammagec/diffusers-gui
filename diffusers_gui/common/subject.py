@@ -1,30 +1,41 @@
-class Subject(object):
-	def __init__(self, name = 'Unknown Subject'):
-		self.name = name
-		self.subscribers = dict()
+from . import (
+	MergeMap, Subscription, Observable, EMPTY_SUBSCRIPTION,
+	SubscriptionLike
+)
 
-	def register(self, who, callback = None):
-		self.subscribers[who] = callback
+class Subject(Observable, SubscriptionLike):
+	def __init__(self, initial_subscribe = None, name = 'Unknown Subject'):	
+		super().__init__(self.subscribe_)
+		self.name = name		
+		self.closed = False
+		self.observers = []
+		self.is_stopped = False
+		self.has_error = False
+		if (initial_subscribe != None):
+			self.subscribe(initial_subscribe)
 
-	def unregister(self, who):
-		del self.subscribers[who]
+	def on_new_subscribe(self, callback):
+		pass
 
-	def dispatch(self, val = None):
-		for subscriber, callback in self.subscribers.items():
-			sub_name =  subscriber.name if hasattr(subscriber, 'name') else 'unknown'			
-			print(f'{self.name} dispatching to {sub_name} with value {val}')
-			callback(val)
+	def subscribe_(self, subscriber):		
+		if self.is_stopped:
+			return EMPTY_SUBSCRIPTION
+		self.observers.append(subscriber)					
+		def remove_subscription(self, subscriber):
+			self.observers.remove(subscriber)
+		return Subscription(lambda: remove_observer)	
 
-	def pipe(self, *ops, name = None):
-		new_sub = Subject(name = name)
-		def process(val):
-			new_val = val
-			for op in ops:
-				if isinstance(op, Map):
-					new_val = op.map(new_val)
-				if isinstance(op, Tap):
-					op.tap(new_val)
-			print(f'setting value after pipe {new_val}')
-			new_sub.dispatch(new_val)
-		self.register(self, process)		
-		return new_sub
+	def next(self, val = None):		
+		if not self.is_stopped and self.observers != None:
+			for observer in self.observers:	
+				observer.next(val)
+
+	def error(self, err):
+		pass
+
+	def complete(self):
+		pass
+
+	def unsubscribe(self):
+		self.is_stopped = self.closed = True
+		self.observers = None

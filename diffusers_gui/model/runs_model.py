@@ -11,7 +11,7 @@ class RunsModel:
 		self.update_runs_subject = Subject()
 		self.session_path = ''		
 		self.selection_model = app_context.selection_model
-		self.selection_model.selected_session.register(self, 
+		self.selection_model.selected_session.subscribe(
 			lambda session: self.selected_session_updated(session))
 		
 	def selected_session_updated(self, session):
@@ -24,7 +24,7 @@ class RunsModel:
 						self.runs.append(f.name)
 			self.runs.sort(key = int, reverse = True)
 			print(f'loaded runs for {session}')
-		self.update_runs_subject.dispatch()	
+		self.update_runs_subject.next()	
 
 	def on_run_select(self, run):			
 		print(f'run selected {run}')

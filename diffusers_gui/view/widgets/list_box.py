@@ -1,6 +1,9 @@
-from tkinter import Listbox as TkListBox, SINGLE, END
+from tkinter import Listbox as TkListBox, SINGLE, END, StringVar
 
 from . import View
+
+FIRST = 'first'
+LAST = 'last'
 
 def create_list_box(parent, select_command, listvariable = None):
 	listbox = TkListBox(parent, selectmode = SINGLE, 
@@ -27,10 +30,25 @@ def create_list_box(parent, select_command, listvariable = None):
 
 class ListBox(View):
 
-	def __init__(self, on_select, var = None, layout_options = None):
-		super().__init__(layout_options)
+	def __init__(
+		self, on_select, var = None, layout_options = None, auto_select = None
+	):
+		super().__init__(layout_options)		
 		self.var = var
 		self.on_select = on_select
+		self.string_var = None
+		self.auto_select = auto_select
+		if (self.var != None):
+			self.string_var = StringVar()
+			self.var.subscribe(lambda val: self.update_items(val))
+
+	def update_items(self, val):
+		print(f'setting items {val}')
+		self.string_var.set(val)
+		if self.auto_select == FIRST:
+			self.select_first()
+		elif self.auto_select == LAST:
+			self.select_last()
 
 	def select_first(self):
 		self.listbox.select_set(0)
@@ -43,7 +61,7 @@ class ListBox(View):
 
 	def create(self, parent):
 		super().create()
-		self.listbox = create_list_box(parent, self.on_select, self.var)
+		self.listbox = create_list_box(parent, self.on_select, self.string_var)
 
 	def clear_selection(self):
 		self.listbox.selection_clear(0, END)

@@ -3,9 +3,10 @@ from tkinter import DISABLED, NORMAL, END, INSERT
 
 def bind_enabled_to_value_observer(obj, val_obs, widget):	
 	def on_enabled(enabled):
-		print(f'val obs enabled {enabled}')
+		name = widget.name if hasattr(widget, 'name') else 'unknown widget'
+		print(f'val obs enabled {enabled} for widget {name}')
 		widget.configure(state = NORMAL if enabled else DISABLED)	
-	val_obs.register(obj, lambda enabled: on_enabled(enabled))
+	val_obs.subscribe(lambda enabled: on_enabled(enabled))
 
 def bind_enabled_to_intvar(widget, var):	
 	def on_enabled(var_name, index, mode):
@@ -38,7 +39,7 @@ def bind_visible_to_observer(obj, val_obs, widget, vis_options):
 			widget.pack(vis_options)
 		else:
 			widget.pack_forget()
-	val_obs.register(obj, lambda visible: on_visible(visible))
+	val_obs.subscribe(lambda visible: on_visible(visible))
 
 def bind_visible_to_intvar(widget, var, vis_options):
 	def on_visible(var_name, index, mode):
@@ -51,4 +52,4 @@ def bind_visible_to_intvar(widget, var, vis_options):
 def bind_var_to_value_observer(obj, var, obs):
 	def on_change(val):
 		var.set(val)
-	obs.register(obj, on_change)
+	obs.subscribe(on_change)

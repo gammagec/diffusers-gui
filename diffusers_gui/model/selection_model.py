@@ -14,7 +14,7 @@ class SelectionModel:
 	def set_selected_run(self, run):
 		print(f'run set {run}')
 		self.selected_run = run
-		self.run_selected.dispatch()	
+		self.run_selected.next()	
 
 	def set_selected_session(self, session):
 		print(f'session set {session}')		
@@ -23,4 +23,4 @@ class SelectionModel:
 	def set_selected_image(self, image):
 		print(f'image set {image}')
 		self.selected_image = image
-		self.image_selected.dispatch()
+		self.image_selected.next()

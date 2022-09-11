@@ -1,7 +1,7 @@
 class RunInfoViewModel:
 	def __init__(self, model, app_context):
 		self.model = model
-		model.update_run_model_subject.register(self, lambda _: self.update_run())
+		model.update_run_model_subject.subscribe(lambda _: self.update_run())
 
 	def set_view(self, view):
 		self.view = view

@@ -19,8 +19,8 @@ class SessionsView(Composite):
 		self.sessions_list = ListBox(
 			lambda evt: self.view_model.on_session_clicked(
 				self.sessions_list.get_selected_value()),
-				var = self.view_model.list_items,
-				layout_options = pack_layout_options(fill = X))
+			var = self.view_model.list_items,
+			layout_options = pack_layout_options(fill = X))
 		self.add_child(self.sessions_list)
 
 		self.add_child((

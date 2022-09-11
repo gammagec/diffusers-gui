@@ -5,10 +5,7 @@ class SessionsViewModel(object):
 
 	def __init__(self, model, app_context):
 		self.model = model
-		self.list_items = StringVar()
-
-		model.session_names.register(self, lambda val: self.list_items.set(val))		
-		self.list_items.set(model.session_names.get_value())
+		self.list_items = model.session_names.pipe(name = 'list items pipes')	
 
 	def set_view(self, view):
 		self.view = view

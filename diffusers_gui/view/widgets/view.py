@@ -1,7 +1,7 @@
 from tkinter import Tk, Frame
 
 class View(object):	
-	def __init__(self, layout_options = None):
+	def __init__(self, layout_options = None):		
 		self.name = 'view'
 		self.created = False
 		self.layout_options = layout_options

@@ -12,13 +12,17 @@ class ImageModel(object):
 	def __init__(self, app_context):
 		self.selection_model = app_context.selection_model
 		self.images_model = app_context.images_model
-		self.image = ValueSubject(None)
-		self.copy_seed_value = Subject()
+		self.image = ValueSubject(None)		
 		self.use_image_value = Subject()		
 
-		self.selection_model.image_selected.register(self, lambda _: self.load_image())
+		self.selection_model.image_selected.subscribe(lambda _: self.load_image())
 
-	def open(self):
+		self.open = Subject(lambda _: self.on_open())
+		self.copy = Subject(lambda _: self.on_copy())
+		self.use_image = Subject(lambda _: self.on_use_image())
+		self.copy_seed = Subject()
+
+	def on_open(self):
 		path = self.get_image_path()
 		if (path != None):						
 			print(f'opening image {path}')
@@ -31,13 +35,10 @@ class ImageModel(object):
 		path = os.path.join(self.images_model.images_path, img_name)
 		return path
 
-	def copy_seed(self):		
-		self.copy_seed_value.dispatch()
-
-	def use_image(self):
-		self.use_image_value.dispatch()
+	def on_use_image(self):
+		self.use_image_value.next()
 	
-	def copy(self):
+	def on_copy(self):
 		path = self.get_image_path()		
 		if (path != None):						
 			print(f'copying image {path}')

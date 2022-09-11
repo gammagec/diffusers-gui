@@ -3,15 +3,16 @@ from tkinter import filedialog
 
 from . import TextBox, Button, Composite
 from ..layout import RowLayout
+from ...common import ValueSubject
 
 class LoadFileView(Composite):
 	name = 'load_file_view'
 
 	def __init__(self, var, layout_options = None):
 		super().__init__(layout_options = layout_options, layout_manager = RowLayout())
-		self.val = StringVar()
+		self.val = ValueSubject('')
 		self.var = var
-		var.trace_add('write', lambda a, b, c: self.val.set(self.var.get()))
+		var.subscribe(lambda val: self.val.set_value(val))
 	
 	def create(self, parent):
 		super().create(parent)
@@ -22,13 +23,13 @@ class LoadFileView(Composite):
 		button = Button(var = 'Load', handler = lambda: self.load())
 		self.add_child(button)
 
-		clear_button = Button(var = 'Clear', handler = lambda: self.var.set(''))
+		clear_button = Button(var = 'Clear', handler = lambda: self.var.set_value(''))
 		self.add_child(clear_button)
 
 	def load(self):
-		if self.val.get() == '':	
-			self.var.set(value = filedialog.askopenfilename(
+		if self.val.get_value() == '':	
+			self.var.set_value(value = filedialog.askopenfilename(
 				filetypes = [("PNG", "*.png"), ("Jpg", "*.jpg"), ("Jpeg", "*.jpeg")]))
 		else:
-			self.var.set(self.val.get())
+			self.var.set_value(self.val.get_value())
 

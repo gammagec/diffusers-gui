@@ -2,7 +2,7 @@ class RunsViewModel:
 
 	def __init__(self, model, app_context):
 		self.model = model
-		model.update_runs_subject.register(self, lambda _: self.update_runs())
+		model.update_runs_subject.subscribe(lambda _: self.update_runs())
 
 	def set_view(self, view):
 		self.view = view

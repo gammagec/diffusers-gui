@@ -11,7 +11,7 @@ class MaskImageModel(ImageModel):
 	def __init__(self, app_context):
 		super().__init__(app_context)		
 		self.params_model = app_context.params_model
-		self.params_model.mask.register(self, lambda val: self.load_image())		
+		self.params_model.mask.subscribe(lambda val: self.load_image())		
 
 	def get_processed_image(self, image):
 

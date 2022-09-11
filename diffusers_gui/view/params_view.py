@@ -37,11 +37,9 @@ class ParamsView(Composite):
 			layout_options = grid_layout_options(row = row, column = 0, columnspan = 3)))		
 		row += 1
 
-		self.add_child(Label(var = 'Image Prompt:',
-			layout_options = grid_layout_options(row = row, column = 0, sticky = E)))		
-
-		self.add_child(LoadFileView(self.view_model.image_prompt,
-			layout_options = grid_layout_options(row = row, column = 1, columnspan = 2, sticky = W)))		
+		self.add_child(Button('Load Init Image', 
+			lambda: self.view_model.load_init_image_clicked.next(),
+			layout_options = grid_layout_options(row = row, column = 0, columnspan = 2)))
 		row += 1
 		
 		self.add_child(Label(var = 'Strength:',

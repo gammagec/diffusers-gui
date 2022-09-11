@@ -8,8 +8,7 @@ class ImageView(Composite):
 
 	def __init__(self, view_model):
 		super().__init__()		
-		self.view_model = view_model	
-		view_model.set_view(self)					
+		self.view_model = view_model					
 
 	def create(self, parent):
 		super().create(parent)
@@ -18,10 +17,10 @@ class ImageView(Composite):
 		self.buttons_view = (			
 				Composite(RowLayout())
 				.add_child(Button("Open", 			
-					lambda: self.view_model.open_clicked(),
+					lambda: self.view_model.open_clicked.next(),
 					enabled_value = view_model.open_button_enabled))
 				.add_child(Button("Copy Image", 			
-					lambda: self.view_model.copy_clicked(),
+					lambda: self.view_model.copy_clicked.next(),
 					enabled_value = view_model.copy_button_enabled))
 			)
 

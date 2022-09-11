@@ -5,7 +5,7 @@ class NotObserver(ValueSubject):
 		super().__init__(not subject.get_value())
 		self.subject = subject
 
-		subject.register(self, lambda value: self.on_change())
+		subject.subscribe(lambda value: self.on_change())
 
 	def on_change(self):
 		self.set_value(not self.subject.get_value())

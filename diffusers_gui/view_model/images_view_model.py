@@ -1,23 +1,12 @@
+from ..common import tap, Subject
+
 class ImagesViewModel:
 
 	def __init__(self, model, app_context):
 		self.model = model
-		model.update_images_subject.register(self, lambda _: self.update_images())
-
-	def set_view(self, view):
-		self.view = view
-
-	def update_images(self):
-		print('updating images')
-		self.view.clear_image_list()
-
-		for name in self.model.images:
-			self.view.add_image(name)
-		if (len(self.model.images) > 0):
-			self.view.select_first()			
-		else:
-			self.model.set_image(None)		
-
-	def on_image_selected(self, image):
-		self.model.set_image(image)
+		self.images = model.images.pipe(
+			tap(lambda val: f'got {len(val)} images set'),
+			name = 'images pipe'
+		)
+		self.image_selected = Subject(lambda val: self.model.set_image(val))	
 

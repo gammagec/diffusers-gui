@@ -36,7 +36,7 @@ class RunModel:
 		self.update_run_model_subject = Subject()		
 		self.selection_model = app_context.selection_model
 
-		self.selection_model.run_selected.register(self, lambda _: self.on_run_selected())
+		self.selection_model.run_selected.subscribe(lambda _: self.on_run_selected())
 
 	def on_run_selected(self):
 		run = self.selection_model.selected_run
@@ -64,4 +64,4 @@ class RunModel:
 					self.session_name = config.session_name
 					self.strength = config.strength
 					
-		self.update_run_model_subject.dispatch()
+		self.update_run_model_subject.next()

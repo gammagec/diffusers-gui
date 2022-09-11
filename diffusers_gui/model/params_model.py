@@ -13,7 +13,7 @@ class ParamsModel:
 	name = 'params_model'
 
 	def __init__(self, app_context):
-		self.seed = 42	
+		self.seed = ValueSubject(42)
 		self.ddim_steps = 50
 		self.n_samples = 1
 		self.n_iter = 1
@@ -31,19 +31,20 @@ class ParamsModel:
 		self.mask = ValueSubject(None)
 
 		self.runs_model = app_context.runs_model
-		self.image_model = app_context.image_model
-		self.seed_changed = Subject()
+		self.image_model = app_context.image_model		
 		self.config = app_context.config
 		self.diffusers_service = app_context.diffusers_service
 
-		self.image_model.copy_seed_value.register(self, lambda _: self.on_copy_seed())
-		self.image_model.use_image_value.register(self, lambda _: self.on_use_image())
+		self.image_model.copy_seed.subscribe(lambda _: self.on_copy_seed())
+		self.image_model.use_image_value.subscribe(lambda _: self.on_use_image())
+
+	def open_init_image(self, path):
+		self.init_image.set_value(path)
 
 	def on_copy_seed(self):
 		img = self.selection_model.selected_image
 		img = img[6:-4]
-		self.seed = img
-		self.seed_changed.dispatch()
+		self.seed.set_value(img)
 
 	def on_use_image(self):
 		path = os.path.join(self.config.out_dir)
@@ -51,10 +52,10 @@ class ParamsModel:
 		path = os.path.join(path, self.selection_model.selected_session.get_value())
 		path = os.path.join(path, self.selection_model.selected_run)
 		path = os.path.join(path, self.selection_model.selected_image)
-		self.init_image.set_value(path)
+		#self.init_image.set_value(path)
 
 	def set_random_seed(self):
-		self.seed = random.randint(0, 4294960000)
+		self.seed.set_value(random.randint(0, 4294960000))
 
 	def after_run(self):
 		self.runs_model.after_new_run()
@@ -76,7 +77,7 @@ class ParamsModel:
 		config_path = os.path.join(run_path, "config.yaml")
 		with open(config_path, 'w') as file:
 			yaml.dump(Namespace(
-				seed = self.seed,
+				seed = self.seed.get_value(),
 				ddim_steps = self.ddim_steps,
 				n_samples = self.n_samples,
 				n_iter = self.n_iter,
@@ -96,7 +97,7 @@ class ParamsModel:
 		if self.init_image.get_value() == None:
 			self.diffusers_service.run_txt2img(
 				run_path, 
-				self.seed, 
+				self.seed.get_value(), 
 				self.ddim_steps, 
 				self.n_samples,
 				self.n_iter, 
@@ -112,7 +113,7 @@ class ParamsModel:
 		elif self.mask.get_value() != None:
 			self.diffusers_service.run_inpaint(
 				run_path, 
-				self.seed, 
+				self.seed.get_value(), 
 				self.ddim_steps, 
 				self.n_samples,
 				self.n_iter, 
@@ -131,7 +132,7 @@ class ParamsModel:
 		else:
 			self.diffusers_service.run_img2img(
 				run_path, 
-				self.seed, 
+				self.seed.get_value(), 
 				self.ddim_steps, 
 				self.n_samples,
 				self.n_iter, 
