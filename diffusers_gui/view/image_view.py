@@ -22,7 +22,8 @@ class ImageView(Composite):
 			)
 
 		self.add_child(Label(view_model.title))
-		self.canvas = Canvas(self.view_model.image, 512, 512)
+		self.canvas = Canvas(self.view_model.image, 512, 512,
+			view_model.mouse_handler)
 		self.add_child(self.canvas)
 		self.add_child(self.buttons_view)		
 

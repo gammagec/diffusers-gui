@@ -15,3 +15,5 @@ class ImageViewModel:
 		self.copy_clicked = Subject(lambda _: self.model.copy.next())
 		self.use_image_clicked = Subject(lambda _: self.model.use_image.next())
 		self.copy_seed_clicked = Subject(lambda _: self.model.copy_seed.next())
+
+		self.mouse_handler = None

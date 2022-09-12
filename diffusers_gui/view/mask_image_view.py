@@ -15,3 +15,12 @@ class MaskImageView(ImageView):
 		buttons.add_child(Button("Clear",
 			lambda: self.view_model.clear_mask_image_clicked.next(),
 			enabled_value = self.view_model.clear_mask_image_enabled))		
+
+		buttons.add_child(Button("Reset",
+			lambda: self.view_model.reset_mask_image_clicked.next()))		
+
+		buttons.add_child(Button("Erase",
+			lambda: self.view_model.erase_clicked.next()))		
+
+		buttons.add_child(Button("Restore",
+			lambda: self.view_model.restore_clicked.next()))		
