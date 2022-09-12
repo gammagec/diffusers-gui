@@ -1,6 +1,8 @@
 import argparse
 from diffusers_gui import MainWindow, Namespace, AppContext
 from diffusers_gui import Observable, Subscriber, map, Subject
+from diffusers_gui import RealEsrganService
+from PIL import Image
 
 def main():
 	parser = argparse.ArgumentParser()
@@ -21,14 +23,18 @@ def main():
 	app_context.sessions_model.load()
 	main_window.start()		
 
-	#clicks = Subject()
-	#positions = clicks.pipe(
-	#	map(lambda ev, index: ev['x']),
-	#	map(lambda pos, index: pos + 1)
-	#)
-	#positions.subscribe(lambda val: print(f'position: {val}'))	
-	#clicks.next({'x': 1})
-	#clicks.next({'x': 2})
+	#real_esrgan_service = RealEsrganService()
+	#print('doing esrgan')
+
+	#img = Image.open("data/esrgan/lena_blurred.png")
+	#(h, w) = img.size
+	#print(f'doing esrgan on an {w} by {h} image')
+	#out = real_esrgan_service.process(img)
+
+	#h *= 4
+	#w *= 4
+	#print(f'new size {w} {h}')
+	#out.save("data/esrgan/lena_out.png")
 
 if __name__ == "__main__":
 	main()

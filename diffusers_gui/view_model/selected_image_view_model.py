@@ -11,3 +11,8 @@ class SelectedImageViewModel(ImageViewModel):
 			tap(lambda val: print(f'open button got enabled value {val}'))
 		)		
 		self.open_clicked = Subject(lambda _: self.model.open.next())
+
+		self.enhance_clicked = Subject(lambda _: self.model.enhance.next())
+
+		self.enhance_button_enabled = model.image.pipe(
+			map(lambda val, index: val != None))

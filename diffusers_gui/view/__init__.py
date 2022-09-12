@@ -7,4 +7,5 @@ from .selected_image_view import SelectedImageView
 from .input_image_view import InputImageView
 from .mask_image_view import MaskImageView
 from .sessions_view import SessionsView
+from .reference_image_view import ReferenceImageView
 from .main_window import MainWindow

@@ -9,4 +9,5 @@ from .run_model import RunModel
 from .runs_model import RunsModel
 from .selection_model import SelectionModel
 from .sessions_model import SessionsModel
+from .reference_image_model import ReferenceImageModel
 from .app_context import AppContext

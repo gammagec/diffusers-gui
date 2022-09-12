@@ -8,13 +8,15 @@ from .widgets import View, Composite
 # Views
 from . import (
 	SessionsView, RunsView, RunInfoView, ImagesView, 
-	ParamsView, SelectedImageView, InputImageView, MaskImageView
+	ParamsView, SelectedImageView, InputImageView, MaskImageView,
+	ReferenceImageView,
 )
 
 # View Models
 from ..view_model import (
 	ParamsViewModel, SessionsViewModel, SelectedImageViewModel, ImagesViewModel, 
-	RunInfoViewModel, RunsViewModel, InputImageViewModel, MaskImageViewModel
+	RunInfoViewModel, RunsViewModel, InputImageViewModel, MaskImageViewModel,
+	ReferenceImageViewModel,
 )
 
 class MainWindow:
@@ -46,6 +48,8 @@ class MainWindow:
 		main_view.add_child(Composite()
 			.add_child(MaskImageView(
 				MaskImageViewModel(app_context.mask_image_model, 'Mask Image')))
+			.add_child(ReferenceImageView(
+				ReferenceImageViewModel(app_context.reference_image_model, 'Reference Image')))
 		)
 		
 		main_view.add_child(ParamsView(ParamsViewModel(app_context.params_model, app_context)))

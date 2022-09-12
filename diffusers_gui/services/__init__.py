@@ -1,2 +1,3 @@
 from .diffusers_service import DiffusersService
 from .message_service import MessageService
+from .real_esrgan_service import RealEsrganService

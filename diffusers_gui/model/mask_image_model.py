@@ -13,8 +13,12 @@ class MaskImageModel(ImageModel):
 		self.input_image_model = app_context.input_image_model
 		self.open_mask_image = Subject(lambda val: self.load_image(val))
 		self.clear_mask_image = Subject(lambda val: self.load_image(None))
-		self.input_image_model.image.subscribe(lambda val: self.render_mask())
+		self.input_image_model.image.subscribe(lambda val: self.init_image_loaded(val))
 		self.mask_fill = (255, 255, 255, 255)
+
+	def init_image_loaded(self, val):
+		if val != None and self.mask.get_value() != None:
+			self.render_mask()
 
 	def paint_mask_at(self, x, y):
 		print(f'painting mask at {x} {y}')

@@ -5,8 +5,7 @@ import win32clipboard
 
 from . import ImageModel
 
-from ..common import Subject
-from ..common import BehaviorSubject
+from ..common import Subject, BehaviorSubject
 
 class SelectedImageModel(ImageModel):
 	name = 'selected image_model'
@@ -22,9 +21,17 @@ class SelectedImageModel(ImageModel):
 		self.copy_seed = Subject()
 		self.use_image = Subject(lambda _: self.on_use_image())
 		self.input_image_model = app_context.input_image_model
+		self.enhance = Subject(lambda _: self.on_enhance())
+		self.real_esrgan_service = app_context.real_esrgan_service
+
+	def on_enhance(self):
+		out = self.real_esrgan_service.process(self.image.get_value())
+		path = self.get_image_path(self.selection_model.selected_image)
+		path = path[0:-4] + '_enhanced.png'
+		out.save(path)
 
 	def on_open(self):
-		path = self.get_image_path(self.selection_model.image_selected.get_value())
+		path = self.get_image_path(self.selection_model.selected_image)
 		if (path != None):						
 			print(f'opening image {path}')
 			os.startfile(path)

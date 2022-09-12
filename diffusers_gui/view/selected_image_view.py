@@ -26,3 +26,6 @@ class SelectedImageView(ImageView):
 
 		buttons.add_child(Button("Copy Seed", lambda: self.view_model.copy_seed_clicked.next(),
 			enabled_value = self.view_model.copy_seed_button_enabled))		
+
+		buttons.add_child(Button("Enhance", lambda: self.view_model.enhance_clicked.next(),
+			enabled_value = self.view_model.enhance_button_enabled))		
