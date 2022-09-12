@@ -19,6 +19,8 @@ class ImageView(Composite):
 				.add_child(Button("Copy Image", 			
 					lambda: self.view_model.copy_clicked.next(),
 					enabled_value = view_model.copy_button_enabled))
+				.add_child(Button("Enhance", lambda: self.view_model.enhance_clicked.next(),
+					enabled_value = self.view_model.enhance_button_enabled))		
 			)
 
 		self.add_child(Label(view_model.title))

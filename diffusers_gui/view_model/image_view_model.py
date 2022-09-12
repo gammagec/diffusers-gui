@@ -15,5 +15,9 @@ class ImageViewModel:
 		self.copy_clicked = Subject(lambda _: self.model.copy.next())
 		self.use_image_clicked = Subject(lambda _: self.model.use_image.next())
 		self.copy_seed_clicked = Subject(lambda _: self.model.copy_seed.next())
+		self.enhance_clicked = Subject(lambda _: self.model.enhance.next())
+
+		self.enhance_button_enabled = model.image.pipe(
+			map(lambda val, index: val != None))
 
 		self.mouse_handler = None
