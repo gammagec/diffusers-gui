@@ -17,10 +17,12 @@ class SelectedImageView(ImageView):
 		super().create(parent)
 		buttons = super().get_buttons_view()
 
-		use_image = Button("Use Image", lambda: self.view_model.use_image_clicked.next(),
-			enabled_value = self.view_model.use_button_enabled)			
-		buttons.add_child(use_image)
+		buttons.add_child(Button("Open", 			
+					lambda: self.view_model.open_clicked.next(),
+					enabled_value = self.view_model.open_button_enabled))
 
-		copy_seed = Button("Copy Seed", lambda: self.view_model.copy_seed_clicked.next(),
-			enabled_value = self.view_model.copy_seed_button_enabled)				
-		buttons.add_child(copy_seed)		
+		buttons.add_child(Button("Use Image", lambda: self.view_model.use_image_clicked.next(),
+			enabled_value = self.view_model.use_button_enabled))
+
+		buttons.add_child(Button("Copy Seed", lambda: self.view_model.copy_seed_clicked.next(),
+			enabled_value = self.view_model.copy_seed_button_enabled))		

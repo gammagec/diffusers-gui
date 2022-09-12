@@ -1,6 +1,6 @@
 import argparse
 from diffusers_gui import MainWindow, Namespace, AppContext
-from diffusers_gui import Observable, Subscriber, map_op, Subject
+from diffusers_gui import Observable, Subscriber, map, Subject
 
 def main():
 	parser = argparse.ArgumentParser()
@@ -23,8 +23,8 @@ def main():
 
 	#clicks = Subject()
 	#positions = clicks.pipe(
-	#	map_op(lambda ev, index: ev['x']),
-	#	map_op(lambda pos, index: pos + 1)
+	#	map(lambda ev, index: ev['x']),
+	#	map(lambda pos, index: pos + 1)
 	#)
 	#positions.subscribe(lambda val: print(f'position: {val}'))	
 	#clicks.next({'x': 1})

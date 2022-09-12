@@ -12,7 +12,7 @@ class TextBox(View):
 		self.string_var = StringVar()
 		self.string_var.set(var.get_value())
 		var.subscribe(lambda val: self.string_var.set(val))
-		self.string_var.trace('w', lambda a, b, c: var.set_value(self.string_var.get()))
+		self.string_var.trace('w', lambda a, b, c: var.next(self.string_var.get()))
 
 	def create(self, parent):
 		super().create()		

@@ -18,7 +18,6 @@ class RunInfoViewModel:
 				f'device: {model.device}, fixed_code: {model.fixed_code}\n'
 				f'from_file: {model.from_file}\n'
 				f'f: {model.f}, half: {model.half}\n'
-				f'init_img: {model.init_img}\n'
 				f'n_rows: {model.n_rows}\n'
 				f'outdir: {model.outdir}\n'
 				f'plms: {model.plms}\n'

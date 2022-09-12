@@ -1,5 +1,5 @@
 import os
-from ..common.subject import Subject
+from ..common import Subject
 
 class RunsModel:
 	name = 'runs_model'	
@@ -9,6 +9,7 @@ class RunsModel:
 		self.sessions_model = app_context.sessions_model
 		self.message_service = app_context.message_service		
 		self.update_runs_subject = Subject()
+		self.select_recent_subject = Subject()
 		self.session_path = ''		
 		self.selection_model = app_context.selection_model
 		self.selection_model.selected_session.subscribe(
@@ -32,3 +33,4 @@ class RunsModel:
 
 	def after_new_run(self):
 		self.selected_session_updated(self.selection_model.selected_session.get_value())
+		self.select_recent_subject.next()

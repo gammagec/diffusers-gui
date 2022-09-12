@@ -1,6 +1,6 @@
-from . import ValueSubject
+from . import BehaviorSubject
 
-class EqualsObserver(ValueSubject):
+class EqualsObserver(BehaviorSubject):
 	def __init__(self, subject, expect):		
 		super().__init__(subject.get_value() == expect)
 		self.subject = subject
@@ -9,4 +9,4 @@ class EqualsObserver(ValueSubject):
 		subject.subscribe(lambda value: self.on_change())
 
 	def on_change(self):
-		self.set_value(self.subject.get_value() == self.expect)
+		self.next(self.subject.get_value() == self.expect)

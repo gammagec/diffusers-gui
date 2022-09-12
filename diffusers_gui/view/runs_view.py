@@ -19,7 +19,6 @@ class RunsView(Composite):
 		self.runs_list = ListBox(
 			lambda evt: self.view_model.on_run_select(
 				self.runs_list.get_selected_value()), 
-			auto_select = FIRST,
 			layout_options = pack_layout_options(fill = X))	
 		self.add_child(self.runs_list)
 

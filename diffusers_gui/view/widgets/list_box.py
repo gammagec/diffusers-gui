@@ -51,13 +51,15 @@ class ListBox(View):
 			self.select_last()
 
 	def select_first(self):
-		self.listbox.select_set(0)
-		self.listbox.event_generate("<<ListboxSelect>>")
+		if self.is_created():
+			self.listbox.select_set(0)
+			self.listbox.event_generate("<<ListboxSelect>>")
 
 	def select_last(self):
-		self.clear_selection()
-		self.listbox.selection_set(END)
-		self.listbox.event_generate('<<ListboxSelect>>')
+		if self.is_created():
+			self.clear_selection()
+			self.listbox.selection_set(END)
+			self.listbox.event_generate('<<ListboxSelect>>')
 
 	def create(self, parent):
 		super().create()
@@ -79,4 +81,9 @@ class ListBox(View):
 		return self.listbox
 
 	def get_selected_value(self):
-		return self.listbox.get(self.listbox.curselection())
+		sel = self.listbox.curselection()
+		print(f'got sel {sel}')
+		if len(sel) > 0:
+			return self.listbox.get(sel)
+		else:
+			return None

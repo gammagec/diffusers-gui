@@ -8,13 +8,13 @@ from .widgets import View, Composite
 # Views
 from . import (
 	SessionsView, RunsView, RunInfoView, ImagesView, 
-	ImageView, ParamsView, SelectedImageView
+	ParamsView, SelectedImageView, InputImageView, MaskImageView
 )
 
 # View Models
 from ..view_model import (
-	ParamsViewModel, SessionsViewModel, ImageViewModel, ImagesViewModel, 
-	RunInfoViewModel, RunsViewModel
+	ParamsViewModel, SessionsViewModel, SelectedImageViewModel, ImagesViewModel, 
+	RunInfoViewModel, RunsViewModel, InputImageViewModel, MaskImageViewModel
 )
 
 class MainWindow:
@@ -30,20 +30,22 @@ class MainWindow:
 		main_view.add_child(Composite(layout_options = pack_layout_options(fill = X))			
 			.add_child(SessionsView(
 				SessionsViewModel(app_context.sessions_model, app_context)))
-			.add_child(RunsView(RunsViewModel(app_context.runs_model, app_context)))
+			.add_child(RunsView(RunsViewModel(app_context.runs_model)))
 			.add_child(RunInfoView(RunInfoViewModel(app_context.run_model, app_context)))
 			.add_child(ImagesView(ImagesViewModel(app_context.images_model, app_context), 
 				layout_options = pack_layout_options(fill = X)))
 		)
 
 		main_view.add_child(Composite()		
-			.add_child(ImageView(ImageViewModel(app_context.input_image_model, app_context, 'Input Image')))
-			.add_child(SelectedImageView(ImageViewModel(
-				app_context.image_model, app_context, 'Selected Image')))
+			.add_child(InputImageView(
+				InputImageViewModel(app_context.input_image_model, 'Input Image')))
+			.add_child(SelectedImageView(
+				SelectedImageViewModel(app_context.image_model, 'Selected Image')))
 		)
 
 		main_view.add_child(Composite()
-			.add_child(ImageView(ImageViewModel(app_context.mask_image_model, app_context, 'Mask Image')))
+			.add_child(MaskImageView(
+				MaskImageViewModel(app_context.mask_image_model, 'Mask Image')))
 		)
 		
 		main_view.add_child(ParamsView(ParamsViewModel(app_context.params_model, app_context)))

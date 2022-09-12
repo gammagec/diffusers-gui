@@ -1,27 +1,37 @@
 from PIL import Image
-import numpy as np
 
 from .image_model import ImageModel
 
-from ..common.subject import Subject
+from ..common import BehaviorSubject, Subject
 
 class MaskImageModel(ImageModel):
 	name = 'mask_image_model'
 
 	def __init__(self, app_context):
 		super().__init__(app_context)		
-		self.params_model = app_context.params_model
-		self.params_model.mask.subscribe(lambda val: self.load_image())		
+		self.mask = BehaviorSubject(None)
+		self.input_image_model = app_context.input_image_model
+		self.open_mask_image = Subject(lambda val: self.load_image(val))
+		self.clear_mask_image = Subject(lambda val: self.load_image(None))
 
-	def get_processed_image(self, image):
+	def load_image(self, path):
+		print(f'load image for {path}')
+		if (path == None):
+			self.image.next(None)
+			self.mask.next(None)
+			return
 
-		selected_img = self.params_model.init_image.get_value()
-		if (selected_img == None):
+		print(f'loading image {path}')
+		mask_image = Image.open(path)
+		self.mask.next(mask_image)
+
+		init_img = self.input_image_model.image.get_value().copy()
+		if (init_img == None):
 			print('showing mask only')
 			# if no init image, show the mask only
-			return image
-		init_img = Image.open(selected_img)
-		mask = image.convert("RGBA")	
+			self.image.next(mask_image)
+			return
+		mask = mask_image.convert("RGBA")	
 		datas = mask.getdata()
 
 		newData = []
@@ -35,8 +45,4 @@ class MaskImageModel(ImageModel):
 		mask.putdata(newData)
 		
 		init_img.paste(mask, (0, 0), mask)
-		#return Image.composite(init_img, mask.convert('L'), mask.convert('L'))
-		return init_img
-
-	def get_image_path(self):
-		return self.params_model.mask.get_value()
+		self.image.next(init_img)

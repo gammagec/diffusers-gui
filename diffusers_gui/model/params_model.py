@@ -1,19 +1,13 @@
-import gc
-import torch
+import gc, torch, random, os, yaml
 from torch import autocast
-import random
-import os
-import yaml
 
-from ..common.namespace import Namespace
-from ..common.subject import Subject
-from ..common.value_subject import ValueSubject
+from ..common import BehaviorSubject, Subject, Namespace
 
 class ParamsModel:
 	name = 'params_model'
 
 	def __init__(self, app_context):
-		self.seed = ValueSubject(42)
+		self.seed = BehaviorSubject(42)
 		self.ddim_steps = 50
 		self.n_samples = 1
 		self.n_iter = 1
@@ -24,40 +18,27 @@ class ParamsModel:
 		self.channels = 4
 		self.downsampling = 8
 		self.scale = 7.5
-		self.init_image = ValueSubject(None)
 		self.strength = 0.3		
 		self.selection_model = app_context.selection_model
 		self.config = app_context.config
-		self.mask = ValueSubject(None)
-
 		self.runs_model = app_context.runs_model
 		self.image_model = app_context.image_model		
 		self.config = app_context.config
 		self.diffusers_service = app_context.diffusers_service
-
 		self.image_model.copy_seed.subscribe(lambda _: self.on_copy_seed())
-		self.image_model.use_image_value.subscribe(lambda _: self.on_use_image())
-
-	def open_init_image(self, path):
-		self.init_image.set_value(path)
+		self.input_image_model = app_context.input_image_model
+		self.mask_image_model = app_context.mask_image_model
 
 	def on_copy_seed(self):
 		img = self.selection_model.selected_image
 		img = img[6:-4]
-		self.seed.set_value(img)
-
-	def on_use_image(self):
-		path = os.path.join(self.config.out_dir)
-		path = os.path.join(path, 'sessions')
-		path = os.path.join(path, self.selection_model.selected_session.get_value())
-		path = os.path.join(path, self.selection_model.selected_run)
-		path = os.path.join(path, self.selection_model.selected_image)
-		#self.init_image.set_value(path)
+		self.seed.next(img)
 
 	def set_random_seed(self):
-		self.seed.set_value(random.randint(0, 4294960000))
+		self.seed.next(random.randint(0, 4294960000))
 
 	def after_run(self):
+		print('doing after run')
 		self.runs_model.after_new_run()
 
 	def on_run(self):
@@ -91,10 +72,9 @@ class ParamsModel:
 				outdir = self.config.out_dir,
 				scale = self.scale,
 				strength = self.strength,
-				init_img = self.init_image.get_value(),
 				), file)
 
-		if self.init_image.get_value() == None:
+		if self.input_image_model.image.get_value() == None:
 			self.diffusers_service.run_txt2img(
 				run_path, 
 				self.seed.get_value(), 
@@ -108,9 +88,10 @@ class ParamsModel:
 				self.channels, 
 				self.downsampling, 
 				self.scale, 
-				session,
-				lambda: self.after_run())
-		elif self.mask.get_value() != None:
+				session).subscribe(lambda _: self.after_run())
+				# subscribe here still now working
+			self.after_run()
+		elif self.mask_image_model.image.get_value() != None:
 			self.diffusers_service.run_inpaint(
 				run_path, 
 				self.seed.get_value(), 
@@ -124,9 +105,9 @@ class ParamsModel:
 				self.channels, 
 				self.downsampling, 
 				self.scale,
-				self.init_image.get_value(),
+				self.input_image_model.image.get_value(),
 				self.strength,
-				self.mask.get_value(),
+				self.mask_image_model.mask.get_value(),
 				session,
 				lambda: self.after_run())		
 		else:
@@ -143,7 +124,7 @@ class ParamsModel:
 				self.channels, 
 				self.downsampling, 
 				self.scale,
-				self.init_image.get_value(),
+				self.input_image_model.image.get_value(),
 				self.strength,
 				session,
 				lambda: self.after_run())		

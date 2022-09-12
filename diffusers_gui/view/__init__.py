@@ -4,5 +4,7 @@ from .images_view import ImagesView
 from .image_view import ImageView
 from .params_view import ParamsView
 from .selected_image_view import SelectedImageView
+from .input_image_view import InputImageView
+from .mask_image_view import MaskImageView
 from .sessions_view import SessionsView
 from .main_window import MainWindow

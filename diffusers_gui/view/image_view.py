@@ -16,9 +16,6 @@ class ImageView(Composite):
 
 		self.buttons_view = (			
 				Composite(RowLayout())
-				.add_child(Button("Open", 			
-					lambda: self.view_model.open_clicked.next(),
-					enabled_value = view_model.open_button_enabled))
 				.add_child(Button("Copy Image", 			
 					lambda: self.view_model.copy_clicked.next(),
 					enabled_value = view_model.copy_button_enabled))

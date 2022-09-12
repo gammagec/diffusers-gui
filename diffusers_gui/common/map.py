@@ -1,6 +1,6 @@
 from . import operate, create_operator_subscriber
 
-def map_op(project):
+def map(project):
 	index = 0
 	def do_operate(source, subscriber):
 		global index

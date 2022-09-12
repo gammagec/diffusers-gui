@@ -9,8 +9,5 @@ class InputImageModel(ImageModel):
 
 	def __init__(self, app_context):
 		super().__init__(app_context)		
-		self.params_model = app_context.params_model
-		self.params_model.init_image.subscribe(lambda val: self.load_image())
-
-	def get_image_path(self):
-		return self.params_model.init_image.get_value()
+		self.open_init_image = Subject(lambda val: self.load_image(val))
+		self.clear_init_image = Subject(lambda val: self.load_image(None))

@@ -9,10 +9,10 @@ from .react_util import operate
 from .operator_subscriber import create_operator_subscriber
 
 from .merge_map import MergeMap
-from .map import map_op
+from .map import map
 from .tap import tap
 from .subject import Subject
-from .value_subject import ValueSubject
+from .behavior_subject import BehaviorSubject
 from .namespace import Namespace
 from .and_observer import AndObserver
 from .equals_observer import EqualsObserver

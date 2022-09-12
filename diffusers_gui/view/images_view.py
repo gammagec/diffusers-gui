@@ -24,5 +24,5 @@ class ImagesView(Composite):
 			layout_options = pack_layout_options(fill = X))		
 		self.add_child(self.images_list)					
 
-	def on_image_select(self, evt):
+	def on_image_select(self, evt):		
 		self.view_model.image_selected.next(self.images_list.get_selected_value())		

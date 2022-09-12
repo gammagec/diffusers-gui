@@ -1,12 +1,12 @@
 import os
 
-from ..common.value_subject import ValueSubject
+from ..common import BehaviorSubject
 
 class ImagesModel:
 	name = 'images_model'
 
 	def __init__(self, app_context):
-		self.images = ValueSubject([])
+		self.images = BehaviorSubject([])
 		self.image = ''
 		self.runs_model = app_context.runs_model
 		self.images_path = ''
@@ -29,5 +29,5 @@ class ImagesModel:
 				for f in os.scandir(self.images_path):
 					if not f.is_dir() and f.name.endswith('.png'):	
 						images.append(f.name)		
-		self.images.set_value(images)
+		self.images.next(images)
 		print(f'loaded images for {run}')

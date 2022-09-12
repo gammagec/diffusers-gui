@@ -1,8 +1,7 @@
 import os
 import shutil
 
-from ..common.subject import Subject
-from ..common.value_subject import ValueSubject
+from ..common import Subject, BehaviorSubject
 
 class SessionsModel:
 	name = 'sessions_model'
@@ -10,7 +9,7 @@ class SessionsModel:
 	def __init__(self, app_context):								
 		self.config = app_context.config
 		self.message_service = app_context.message_service
-		self.session_names = ValueSubject([], name = 'session names')
+		self.session_names = BehaviorSubject([], name = 'session names')
 		self.sessions_path = ''				
 		self.selection_model = app_context.selection_model
 
@@ -22,7 +21,7 @@ class SessionsModel:
 			for f in os.scandir(self.sessions_path):
 				if f.is_dir():	
 					session_names.append(f.name)
-		self.session_names.set_value(session_names)
+		self.session_names.next(session_names)
 
 	def set_session(self, session):
 		print(f'set session: {session}')		
@@ -36,7 +35,7 @@ class SessionsModel:
 		os.makedirs(session_path, exist_ok = False)
 		session_names = self.session_names.get_value()
 		session_names.append(name)
-		self.session_names.set_value(session_names)
+		self.session_names.next(session_names)
 
 	def get_selected_session_image_count(self):
 		name = self.selection_model.selected_session.get_value()

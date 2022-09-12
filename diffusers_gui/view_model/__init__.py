@@ -4,3 +4,6 @@ from .params_view_model import ParamsViewModel
 from .run_info_view_model import RunInfoViewModel
 from .runs_view_model import RunsViewModel
 from .sessions_view_model import SessionsViewModel
+from .input_image_view_model import InputImageViewModel
+from .selected_image_view_model import SelectedImageViewModel
+from .mask_image_view_model import MaskImageViewModel

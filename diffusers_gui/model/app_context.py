@@ -1,6 +1,6 @@
 from . import (
 	SessionsModel, Config, SelectionModel, RunsModel, ImagesModel, ImageModel,
-	RunModel, InputImageModel, ParamsModel, MaskImageModel,
+	RunModel, InputImageModel, ParamsModel, MaskImageModel, SelectedImageModel
 )
 
 from ..services.message_service import MessageService
@@ -18,7 +18,7 @@ class AppContext:
 		self.runs_model = RunsModel(self)	
 		self.run_model = RunModel(self)		
 		self.images_model = ImagesModel(self)		
-		self.image_model = ImageModel(self)			
-		self.params_model = ParamsModel(self)		
 		self.input_image_model = InputImageModel(self)	
+		self.image_model = SelectedImageModel(self)			
 		self.mask_image_model = MaskImageModel(self)
+		self.params_model = ParamsModel(self)		

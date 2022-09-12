@@ -17,7 +17,6 @@ class RunModel:
 		self.fixed_code = False
 		self.from_file = ''
 		self.half = True
-		self.init_img = ''
 		self.n_iter = 10
 		self.n_rows = 0
 		self.n_samples = 1
@@ -54,7 +53,6 @@ class RunModel:
 					self.ddim_eta = config.ddim_eta
 					self.ddim_steps = config.ddim_steps					
 					self.f = config.f
-					self.init_img = config.init_img
 					self.n_iter = config.n_iter
 					self.n_samples = config.n_samples
 					self.outdir = config.outdir

@@ -12,6 +12,9 @@ class Subscription:
 		for teardown in self.teardowns:
 			teardown()
 
+	def is_closed(self):
+		return self.closed
+
 	def add(self, teardown):
 		self.teardowns.append(teardown)
 

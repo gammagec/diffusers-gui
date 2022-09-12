@@ -37,10 +37,15 @@ class ParamsView(Composite):
 			layout_options = grid_layout_options(row = row, column = 0, columnspan = 3)))		
 		row += 1
 
-		self.add_child(Button('Load Init Image', 
-			lambda: self.view_model.load_init_image_clicked.next(),
-			layout_options = grid_layout_options(row = row, column = 0, columnspan = 2)))
-		row += 1
+		#self.add_child(Button('Load Init Image', 
+		#	lambda: self.view_model.load_init_image_clicked.next(),
+		#	layout_options = grid_layout_options(row = row, column = 0, columnspan = 2)))
+		#row += 1
+
+		#self.add_child(Button('Load Mask Image',
+		#	lambda: self.view_model.load_mask_image_clicked.next(),
+		#	layout_options = grid_layout_options(row = row, column = 0, columnspan = 2)))		
+		#row += 1
 		
 		self.add_child(Label(var = 'Strength:',
 			layout_options = grid_layout_options(row = row, column = 0, sticky = E)))			
@@ -102,21 +107,13 @@ class ParamsView(Composite):
 			layout_options = grid_layout_options(row = row, column = 1)))		
 		row += 1	
 
-		self.add_child(Label(var = 'Mask:',
-			layout_options = grid_layout_options(row = row, column = 0, sticky = E)))		
-
-		self.add_child(LoadFileView(var = self.view_model.mask,
-			layout_options = grid_layout_options(row = row, column = 1, columnspan = 2, sticky = W)))		
-
-		row += 1
-
 		self.add_child(Button(var = 'Run', 
-			handler = lambda: self.view_model.run_clicked(),
+			handler = lambda: self.view_model.run_clicked.next(),
 			enabled_value = self.view_model.run_enabled,
 			layout_options = grid_layout_options(row = row, column = 0)))
 
 		self.add_child(Button(var = 'Run Random Seed', 
-			handler = lambda: self.view_model.run_random_clicked(),
+			handler = lambda: self.view_model.run_random_clicked.next(),
 			enabled_value = self.view_model.run_enabled,
 			layout_options = grid_layout_options(row = row, column = 1)))
 

@@ -8,6 +8,8 @@ import PIL
 from PIL import Image
 import numpy as np
 
+from ..common import Observable
+
 def preprocess(image):
 	w, h = image.size
 	w, h = map(lambda x: x - x % 32, (w, h))  # resize to integer multiple of 32
@@ -26,23 +28,25 @@ class DiffusersService:
 
 	def run_txt2img(self, out_dir, seed, 
 		ddim_steps, n_samples, n_iter, prompt, ddim_eta, H, W,
-		C, f, scale, session_name, after_run, device = "cuda", precision = "autocast"):
+		C, f, scale, session_name, device = "cuda", precision = "autocast"):
 		print('Run txt2img!')
 
-		if self.txt2img_pipe == None:
-			self.txt2img_pipe = StableDiffusionPipeline.from_pretrained(
-				"stable-diffusion-v1-4", revision="fp16", 
-				torch_dtype=torch.float16, use_auth_token=False)
+		def do_txt2img():	
+			if self.txt2img_pipe == None:
+				self.txt2img_pipe = StableDiffusionPipeline.from_pretrained(
+					"stable-diffusion-v1-4", revision="fp16", 
+					torch_dtype=torch.float16, use_auth_token=False)
 
-		generator = torch.Generator(device).manual_seed(seed)
-		pipe = self.txt2img_pipe.to(device)
-		with autocast(device):
-			image = pipe(prompt, generator = generator)["sample"][0]
+			generator = torch.Generator(device).manual_seed(seed)
+			pipe = self.txt2img_pipe.to(device)
+			with autocast(device):
+				image = pipe(prompt, generator = generator)["sample"][0]
 
-		base_count = len(os.listdir(out_dir))
-		path = os.path.join(out_dir, f"{base_count:05}-{seed}.png")
-		image.save(path)
-		after_run()
+			base_count = len(os.listdir(out_dir))
+			path = os.path.join(out_dir, f"{base_count:05}-{seed}.png")
+			image.save(path)
+
+		return Observable(lambda _: do_txt2img())
 
 
 	def run_img2img(self, out_dir, seed,
@@ -55,7 +59,7 @@ class DiffusersService:
 			self.img2img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
 			"stable-diffusion-v1-4", revision="fp16", 
 			torch_dtype=torch.float16, use_auth_token=False)
-		init_image = Image.open(init_img).convert("RGB")
+		init_image = init_img.convert("RGB")
 		generator = torch.Generator(device).manual_seed(seed)
 		pipe = self.img2img_pipe.to(device)
 		with autocast(device):
@@ -83,8 +87,7 @@ class DiffusersService:
 
 		pipe = self.inpaint_pipe.to(device)
 		with autocast(device):
-			init_img = Image.open(init_img).convert("RGB")
-			mask_img = Image.open(mask_img)
+			init_img = init_img.convert("RGB")
 			generator = torch.Generator(device).manual_seed(seed)
 			image = pipe(
 				prompt = prompt, 
