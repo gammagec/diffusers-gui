@@ -4,5 +4,5 @@ config: configs/stable-diffusion/v1-inference.yaml
 out_dir: output
 
 embeddings:  
-  #- token: '*'
-  #  file: D:/development/textual_inversion/logs/myface3_sd/checkpoints/embeddings.pt  
+  - token: '<my-face>'
+    file: C:\Users\gamma\Documents\development\diffusers-gui\data\embeddings\my_face3.pt  

@@ -47,7 +47,7 @@ class MainWindow:
 
 		main_view.add_child(Composite()
 			.add_child(MaskImageView(
-				MaskImageViewModel(app_context.mask_image_model, 'Mask Image')))
+				MaskImageViewModel(app_context.mask_image_model, 'Inpaint Mask Image')))
 			.add_child(ReferenceImageView(
 				ReferenceImageViewModel(app_context.reference_image_model, 'Reference Image')))
 		)

@@ -6,3 +6,5 @@ stable-diffusion-v1-4
 diffusers_gui.egg-info
 gfpgan/weights/detection_Resnet50_Final.pth
 gfpgan/weights/parsing_parsenet.pth
+data/embeddings
+.vs

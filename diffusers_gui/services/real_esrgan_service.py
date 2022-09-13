@@ -8,34 +8,36 @@ from gfpgan import GFPGANer
 class RealEsrganService():
 
 	def __init__(self):
+		self.upsampler = None
 
-		#model_name = 'RealESRGAN_x4plus'
-		model = RRDBNet(num_in_ch = 3, num_out_ch = 3, num_feat = 64,
-			num_block = 23, num_grow_ch = 32, scale = 4)
-		model_path = os.path.join(
-			'src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus.pth')
-		# get from here
-		# https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
-		# or here?
-		# https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-x4v3.pth
 
-		self.upsampler = RealESRGANer(
-			scale = 4,
-			model_path = model_path,
-			model = model,
-			tile = 0,
-			tile_pad = 10,
-			pre_pad = 0,
-			half = True,
-			gpu_id = None 
-		)
-
-		self.face_enhancer = GFPGANer(
-			model_path = 'https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth',
-			upscale = 4,
-			arch='clean',
-			channel_multiplier = 2,
-			bg_upsampler = self.upsampler)
+	def initialize(self):
+		if self.upsampler == None:
+			#model_name = 'RealESRGAN_x4plus'
+			model = RRDBNet(num_in_ch = 3, num_out_ch = 3, num_feat = 64,
+				num_block = 23, num_grow_ch = 32, scale = 4)
+			model_path = os.path.join(
+				'src/realesrgan/experiments/pretrained_models/RealESRGAN_x4plus.pth')
+			# get from here
+			# https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+			# or here?
+			# https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-x4v3.pth
+			self.upsampler = RealESRGANer(
+				scale = 4,
+				model_path = model_path,
+				model = model,
+				tile = 0,
+				tile_pad = 10,
+				pre_pad = 0,
+				half = True,
+				gpu_id = None 
+			)
+			self.face_enhancer = GFPGANer(
+				model_path = 'https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth',
+				upscale = 4,
+				arch='clean',
+				channel_multiplier = 2,
+				bg_upsampler = self.upsampler)
 
 	def process(self, input):
 		img = np.asarray(input) 

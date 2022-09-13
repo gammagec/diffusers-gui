@@ -88,7 +88,9 @@ class ParamsModel:
 				self.channels, 
 				self.downsampling, 
 				self.scale, 
-				session).subscribe(lambda _: self.after_run())
+				session,
+				embeddings = self.config.embeddings		
+			).subscribe(lambda _: self.after_run())
 				# subscribe here still now working
 			self.after_run()
 		elif self.mask_image_model.image.get_value() != None:
@@ -109,7 +111,9 @@ class ParamsModel:
 				self.strength,
 				self.mask_image_model.mask.get_value(),
 				session,
-				lambda: self.after_run())		
+				lambda: self.after_run(),
+				embeddings = self.config.embeddings		
+				)		
 		else:
 			self.diffusers_service.run_img2img(
 				run_path, 
@@ -127,4 +131,6 @@ class ParamsModel:
 				self.input_image_model.image.get_value(),
 				self.strength,
 				session,
-				lambda: self.after_run())		
+				lambda: self.after_run(),
+				embeddings = self.config.embeddings		
+				)		
