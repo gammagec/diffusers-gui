@@ -4,5 +4,7 @@ config: configs/stable-diffusion/v1-inference.yaml
 out_dir: output
 
 embeddings:  
-  - token: '<my-face>'
-    file: C:\Users\gamma\Documents\development\diffusers-gui\data\embeddings\my_face3.pt  
+  #- token: '<my-face>'
+  #  file: C:\Users\gamma\Documents\development\diffusers-gui\data\embeddings\my_face3.pt  
+  - token: '<chaz>'
+    file: C:\Users\gamma\Documents\development\diffusers-gui\data\embeddings\chaz.bin

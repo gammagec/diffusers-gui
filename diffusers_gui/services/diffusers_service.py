@@ -6,7 +6,7 @@ from diffusers import (
 	StableDiffusionPipeline, StableDiffusionImg2ImgPipeline, StableDiffusionInpaintPipeline
 )
 from transformers import CLIPTokenizer, CLIPTextModel
-import os
+import os, gc 
 import PIL
 from PIL import Image
 import numpy as np
@@ -53,48 +53,84 @@ class DiffusersService:
 			revision = "fp16")
 
 	def load_embeddings(self, embeddings):
-		for embedding in embeddings:
-			path = embedding['file']
-			new_token = embedding['token']
-			if path.endswith('.pt'):
-				print(f'loading embedding at {path}')
-				loaded_embeds = torch.load(path, map_location="cpu")
-				string_to_token = loaded_embeds['string_to_token']
-				string_to_param = loaded_embeds['string_to_param']
-				token = list(string_to_token.keys())[0]
-		
-				embeds = string_to_param[token]
-				dtype = self.text_encoder.get_input_embeddings().weight.dtype
-				embeds.to(dtype)
+		if embeddings != None:
+			for embedding in embeddings:
+				path = embedding['file']
+				new_token = embedding['token']
+				if path.endswith('.pt'):
+					print(f'loading embedding at {path}')
+					loaded_embeds = torch.load(path, map_location="cpu")
+					string_to_token = loaded_embeds['string_to_token']
+					string_to_param = loaded_embeds['string_to_param']
+					token = list(string_to_token.keys())[0]
+			
+					embeds = string_to_param[token]
+					dtype = self.text_encoder.get_input_embeddings().weight.dtype
+					embeds.to(dtype)
 
-				token = new_token
-				print(f'storing to token {token}')
-				num_added_tokens = self.tokenizer.add_tokens(token)
-				if num_added_tokens == 0:
-					raise ValueError(f'tokenizer already contains the token {token}')
-				self.text_encoder.resize_token_embeddings(len(self.tokenizer))
-				token_id = self.tokenizer.convert_tokens_to_ids(token)
-				self.text_encoder.get_input_embeddings().weight.data[token_id] = embeds
+					token = new_token
+					print(f'storing to token {token}')
+					num_added_tokens = self.tokenizer.add_tokens(token)
+					if num_added_tokens == 0:
+						raise ValueError(f'tokenizer already contains the token {token}')
+					self.text_encoder.resize_token_embeddings(len(self.tokenizer))
+					token_id = self.tokenizer.convert_tokens_to_ids(token)
+					self.text_encoder.get_input_embeddings().weight.data[token_id] = embeds
+				elif path.endswith('.bin'):
+					print(f'loading embedding at {path}')
+					loaded_learned_embeds = torch.load(path, map_location="cpu")
+					# separate token and the embeds
+					trained_token = list(loaded_learned_embeds.keys())[0]
+					embeds = loaded_learned_embeds[trained_token]
+
+  					# cast to dtype of text_encoder
+					dtype = self.text_encoder.get_input_embeddings().weight.dtype
+					embeds.to(dtype)
+
+					# add the token in tokenizer
+					token = new_token 
+					num_added_tokens = self.tokenizer.add_tokens(token)
+					if num_added_tokens == 0:
+						raise ValueError(f"The tokenizer already contains the token {token}. Please pass a different `token` that is not already in the tokenizer.")
+  
+  					# resize the token embeddings
+					self.text_encoder.resize_token_embeddings(len(self.tokenizer))
+  
+					# get the id for the token and assign the embeds
+					token_id = self.tokenizer.convert_tokens_to_ids(token)
+					self.text_encoder.get_input_embeddings().weight.data[token_id] = embeds
+
 
 	def run_txt2img(self, out_dir, seed, 
 		ddim_steps, n_samples, n_iter, prompt, ddim_eta, H, W,
-		C, f, scale, session_name, device = "cuda", precision = "autocast", embeddings = []):
+		C, f, scale, session_name, device = "cuda", precision = "autocast", embeddings = None):
 		print('Run txt2img!')
 		print(f'Prompt is: {prompt}')
 
-		if self.tokenizer == None:
+		if self.tokenizer == None and embeddings != None and len(embeddings) > 0:
 			self.create_tokenizer()
 			self.load_embeddings(embeddings)
+		gc.collect()
+		torch.cuda.empty_cache()
 
 		def do_txt2img():	
 			if self.txt2img_pipe == None:
-				self.txt2img_pipe = StableDiffusionPipeline.from_pretrained(
-					pretrained_model_path, revision="fp16", 
-					torch_dtypel = torch.float16, 
-					tokenizer = self.tokenizer,
-					text_encoder = self.text_encoder,
-					safety_checker = self.safety_checker
-				)
+				if self.tokenizer != None:
+					self.txt2img_pipe = StableDiffusionPipeline.from_pretrained(
+						pretrained_model_path, revision="fp16", 
+						torch_dtypel = torch.float16, 
+						tokenizer = self.tokenizer,
+						text_encoder = self.text_encoder,
+						safety_checker = self.safety_checker
+					)
+				else:
+					self.txt2img_pipe = StableDiffusionPipeline.from_pretrained(
+						pretrained_model_path, revision="fp16", 
+						torch_dtypel = torch.float16, 
+						safety_checker = self.safety_checker
+					)
+			gc.collect()
+			torch.cuda.empty_cache()
 
 			generator = torch.Generator(device).manual_seed(seed)
 			pipe = self.txt2img_pipe.to(device)
@@ -120,23 +156,35 @@ class DiffusersService:
 		ddim_steps, n_samples, n_iter, prompt, ddim_eta, H, W,
 		C, f, scale, init_img, 
 		strength, session_name, after_run, device = "cuda",  precision = "autocast",
-		embeddings = []):
+		embeddings = None):
 
 		print('Run img2img!')
 		print(f'Prompt is: {prompt}')
 
-		if self.tokenizer == None:
+		if self.tokenizer == None and embeddings != None and len(embeddings) > 0:
 			self.create_tokenizer()
 			self.load_embeddings(embeddings)
+		gc.collect()
+		torch.cuda.empty_cache()
 
 		if self.img2img_pipe == None:
-			self.img2img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
-				pretrained_model_path, revision="fp16", 
-				torch_dtype=torch.float16, use_auth_token=False,
-				tokenizer = self.tokenizer,
-				text_encoder = self.text_encoder,
-				safety_checker = self.safety_checker
-			)
+			if self.tokenizer != None:
+				self.img2img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
+					pretrained_model_path, revision="fp16", 
+					torch_dtype=torch.float16, use_auth_token=False,
+					tokenizer = self.tokenizer,
+					text_encoder = self.text_encoder,
+					safety_checker = self.safety_checker
+				)
+			else:
+				self.img2img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
+					pretrained_model_path, revision="fp16", 
+					torch_dtype=torch.float16, use_auth_token=False,
+					safety_checker = self.safety_checker
+				)
+		gc.collect()
+		torch.cuda.empty_cache()
+
 		init_image = init_img.convert("RGB")
 		generator = torch.Generator(device).manual_seed(seed)
 		pipe = self.img2img_pipe.to(device)
@@ -155,23 +203,34 @@ class DiffusersService:
 		ddim_steps, n_samples, n_iter, prompt, ddim_eta, H, W,
 		C, f, scale, init_img,
 		strength, mask_img, session_name, after_run, device = "cuda",  precision = "autocast",
-		embeddings = []):
+		embeddings = None):
 
 		print('Run inpaint!')
 		print(f'Prompt is: {prompt}')
 
-		if self.tokenizer == None:
+		if self.tokenizer == None and embeddings != None and len(embeddings) > 0:
 			self.create_tokenizer()
 			self.load_embeddings(embeddings)
+		gc.collect()
+		torch.cuda.empty_cache()
 
 		if self.inpaint_pipe == None:
-			self.inpaint_pipe = StableDiffusionInpaintPipeline.from_pretrained(
-				pretrained_model_path, revision="fp16", 
-				torch_dtype=torch.float16, use_auth_token=False,
-				tokenizer = self.tokenizer,
-				text_encoder = self.text_encoder,
-				safety_checker = self.safety_checker
-			)
+			if self.tokenizer != None:
+				self.inpaint_pipe = StableDiffusionInpaintPipeline.from_pretrained(
+					pretrained_model_path, revision="fp16", 
+					torch_dtype=torch.float16, use_auth_token=False,
+					tokenizer = self.tokenizer,
+					text_encoder = self.text_encoder,
+					safety_checker = self.safety_checker
+				)
+			else:
+				self.inpaint_pipe = StableDiffusionInpaintPipeline.from_pretrained(
+					pretrained_model_path, revision="fp16", 
+					torch_dtype=torch.float16, use_auth_token=False,
+					safety_checker = self.safety_checker
+				)
+		gc.collect()
+		torch.cuda.empty_cache()
 
 		pipe = self.inpaint_pipe.to(device)
 		with autocast(device):
