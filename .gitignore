@@ -9,3 +9,8 @@ gfpgan/weights/parsing_parsenet.pth
 data/embeddings
 .vs
 config/local_config.yaml
+node_modules
+app/.browserslistrc
+app/.editorconfig
+app/.gitignore
+app/.vscode

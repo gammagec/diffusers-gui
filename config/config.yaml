@@ -7,4 +7,4 @@ embeddings:
   #- token: '<my-face>'
   #  file: C:\Users\gamma\Documents\development\diffusers-gui\data\embeddings\my_face3.pt  
   - token: '<chaz>'
-    file: C:\Users\gamma\Documents\development\diffusers-gui\data\embeddings\chaz.bin
+    file: C:\dev\embeddings\chaz2.bin

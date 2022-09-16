@@ -91,8 +91,8 @@ class ParamsModel:
 				session,
 				embeddings = self.config.embeddings		
 			).subscribe(lambda _: self.after_run())
-				# subscribe here still now working
-			self.after_run()
+				# subscribe here still not working
+			#self.after_run()
 		elif self.mask_image_model.image.get_value() != None:
 			self.diffusers_service.run_inpaint(
 				run_path, 

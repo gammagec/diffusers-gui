@@ -11,7 +11,7 @@ import PIL
 from PIL import Image
 import numpy as np
 
-from diffusers.src.diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
+from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
 
 from ..common import Observable
 
@@ -31,6 +31,9 @@ class DummySafetyChecker(StableDiffusionSafetyChecker):
 		self._modules = OrderedDict()
 		self._parameters = OrderedDict()
 		self._buffers = OrderedDict()
+		self._backward_hooks = OrderedDict()
+		self._forward_hooks = OrderedDict()
+		self._forward_pre_hooks = OrderedDict()
 	def forward(self, clip_input, images):
 		return images, False
 	def forward_onnx(self, clip_input, images):
@@ -134,6 +137,7 @@ class DiffusersService:
 
 			generator = torch.Generator(device).manual_seed(seed)
 			pipe = self.txt2img_pipe.to(device)
+			pipe.enable_attention_slicing()
 			with autocast(device):
 				image = pipe(
 					prompt, 
@@ -188,6 +192,7 @@ class DiffusersService:
 		init_image = init_img.convert("RGB")
 		generator = torch.Generator(device).manual_seed(seed)
 		pipe = self.img2img_pipe.to(device)
+		pipe.enable_attention_slicing()
 		with autocast(device):
 			image = pipe(prompt, 
 				init_image = preprocess(init_image), 
@@ -233,6 +238,7 @@ class DiffusersService:
 		torch.cuda.empty_cache()
 
 		pipe = self.inpaint_pipe.to(device)
+		pipe.enable_attention_slicing()
 		with autocast(device):
 			init_img = init_img.convert("RGB")
 			generator = torch.Generator(device).manual_seed(seed)
