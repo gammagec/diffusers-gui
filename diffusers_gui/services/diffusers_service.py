@@ -174,13 +174,15 @@ class DiffusersService:
 					torch_dtype=torch.float16, use_auth_token=False,
 					tokenizer = self.tokenizer,
 					text_encoder = self.text_encoder,
-					safety_checker = self.safety_checker
+					safety_checker = self.safety_checker,
+					guidance_scale = f,
 				)
 			else:
 				self.img2img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
 					pretrained_model_path, revision="fp16", 
 					torch_dtype=torch.float16, use_auth_token=False,
-					safety_checker = self.safety_checker
+					safety_checker = self.safety_checker,
+					guidance_scale = f,
 				)
 		gc.collect()
 		torch.cuda.empty_cache()

@@ -44,7 +44,7 @@ parser.add_argument(
     "--prompt",
     type=str,
     nargs="?",
-    default='the character <c>, sharp, spikey, edges',
+    default='a pile of bones in the shape of <c>',
     help="prompt to use for each character"
 )
 
@@ -60,7 +60,7 @@ parser.add_argument(
     "--strength",
     type=float,
     nargs="?",
-    default=0.9,
+    default=1,
     help="strength of init image"
 )
 
@@ -68,7 +68,7 @@ parser.add_argument(
     "--seed",
     type=int,
     nargs="?",
-    default=44,
+    default=45,
     help="seed"
 )
 
@@ -76,7 +76,7 @@ parser.add_argument(
     "--scale",
     type=float,
     nargs="?",
-    default=7.5,
+    default=12,
     help="guidance scale"
 )
 
@@ -102,7 +102,7 @@ if not os.path.exists(dirs):
 service = DiffusersService()
 
 total_x = 10
-total_y = int((122-65) / 10)
+total_y = int((122-65) / 10) + 1
 grid = Image.new('RGB', (total_x * 100, total_y * 100))
 x = 0
 y = 0
@@ -119,17 +119,24 @@ for c in chars:
         draw.text((wb, hb), chr(c[0]), (0, 0, 0), font = font)
         draw = ImageDraw.Draw(img)
 
-        prompt = opt.prompt.replace('<c>', str(c[0]))
+        prompt = opt.prompt.replace('<c>', chr(c[0]))
         print(f'using prompt {prompt}')
-        image = service.run_img2img(
-            '', opt.seed, 50, 1,
-            1, opt.prompt, 0.0, 512, 512, 3, 8, opt.scale, img,
-            opt.strength, '', lambda: 0)
+        if opt.strength < 1.0:
+            image = service.run_img2img(
+                '', opt.seed, 50, 1,
+                1, opt.prompt, 0.0, 512, 512, 3, 8, opt.scale, img,
+                opt.strength, '', lambda: 0)
+        else:
+            image = service.run_txt2img(
+                '', opt.seed, 50, 1,
+                1, opt.prompt, 0.0, 512, 512, 3, 8, opt.scale,
+                '')
+
         image.save(f'{opt.output}/{c[0]}.png')
-        image.resize((100, 100))
+        image = image.resize((100, 100))
         grid.paste(image, (x, y))
         x += 100
-        if x > total_x * 100:
+        if x > (total_x-1) * 100:
             x = 0
             y += 100
 grid.save(f'{opt.output}/grid.png')
