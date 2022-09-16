@@ -1,11 +1,14 @@
 
 from tkinter import StringVar, simpledialog
+from ..common import tap
 
 class SessionsViewModel(object):
 
 	def __init__(self, model, app_context):
 		self.model = model
-		self.list_items = model.session_names.pipe(name = 'list items pipes')	
+		self.list_items = model.session_names.pipe(
+			tap(lambda val: print(f'got val {len(val)}')),
+			name = 'list items pipes')	
 
 	def set_view(self, view):
 		self.view = view

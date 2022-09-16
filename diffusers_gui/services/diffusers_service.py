@@ -148,13 +148,9 @@ class DiffusersService:
 					num_inference_steps = ddim_steps,
 					guidance_scale = f
 				)["sample"][0]
+				return image
 
-			base_count = len(os.listdir(out_dir))
-			path = os.path.join(out_dir, f"{base_count:05}-{seed}.png")
-			image.save(path)
-
-		return Observable(lambda _: do_txt2img())
-
+		return do_txt2img()
 
 	def run_img2img(self, out_dir, seed,
 		ddim_steps, n_samples, n_iter, prompt, ddim_eta, H, W,

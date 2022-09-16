@@ -2,8 +2,7 @@ from .types import SubscriptionLike, Unsubscribable
 from .observer import Observer
 from .subscribable import Subscribable
 from .subscription import Subscription, is_subscription, EMPTY_SUBSCRIPTION
-from .subscriber import Subscriber
-from .safe_subscriber import SafeSubscriber
+from .subscriber import Subscriber, SafeSubscriber
 from .observable import Observable
 from .react_util import operate
 from .operator_subscriber import create_operator_subscriber

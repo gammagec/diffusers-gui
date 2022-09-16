@@ -75,9 +75,11 @@ class ParamsModel:
 				), file)
 
 		if self.input_image_model.image.get_value() == None:
-			self.diffusers_service.run_txt2img(
+			seed = self.seed.get_value()
+			out_dir = run_path
+			image = self.diffusers_service.run_txt2img(
 				run_path, 
-				self.seed.get_value(), 
+				seed,
 				self.ddim_steps, 
 				self.n_samples,
 				self.n_iter, 
@@ -90,9 +92,12 @@ class ParamsModel:
 				self.scale, 
 				session,
 				embeddings = self.config.embeddings		
-			).subscribe(lambda _: self.after_run())
-				# subscribe here still not working
-			#self.after_run()
+			)
+			base_count = len(os.listdir(out_dir))
+			path = os.path.join(out_dir, f"{base_count:05}-{seed}.png")
+			image.save(path)
+			self.after_run()
+
 		elif self.mask_image_model.image.get_value() != None:
 			self.diffusers_service.run_inpaint(
 				run_path, 

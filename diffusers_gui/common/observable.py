@@ -1,6 +1,6 @@
 from functools import reduce
 
-from . import Subscribable, Subscriber, SafeSubscriber, is_subscription
+from . import Subscribable, Subscriber, is_subscription, SafeSubscriber
 
 class Observable(Subscribable):
 
@@ -9,8 +9,9 @@ class Observable(Subscribable):
 		self.source = None
 		self.operator = None
 
-	def subscribe(self, observer):
-		subscriber = observer if is_subscriber(observer) else SafeSubscriber(observer)
+	def subscribe(self, observerOrNext, error = None, complete = None):
+		subscriber = observerOrNext if is_subscriber(observerOrNext) else SafeSubscriber(
+			observerOrNext)#, error, complete)
 		if self.operator == None:
 			subscriber.add(self.subscribe_(subscriber))
 		else:
@@ -38,4 +39,5 @@ def is_observer(val):
 	return val and hasattr(val, 'next') and hasattr(val, 'error') and hasattr(val, 'complete')
 
 def is_subscriber(val):
+	#return (val and isinstance(val, Subscriber)) or (is_observer(val) and is_subscription(val))
 	return val and isinstance(val, Subscriber) or (is_observer(val) and is_subscription(val))

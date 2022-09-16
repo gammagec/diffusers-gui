@@ -21,6 +21,7 @@ class SessionsModel:
 			for f in os.scandir(self.sessions_path):
 				if f.is_dir():	
 					session_names.append(f.name)
+		print(f'setting sessions {len(session_names)}')
 		self.session_names.next(session_names)
 
 	def set_session(self, session):
