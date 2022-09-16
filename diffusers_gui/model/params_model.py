@@ -74,9 +74,10 @@ class ParamsModel:
 				strength = self.strength,
 				), file)
 
+		seed = self.seed.get_value()
+		out_dir = run_path
+
 		if self.input_image_model.image.get_value() == None:
-			seed = self.seed.get_value()
-			out_dir = run_path
 			image = self.diffusers_service.run_txt2img(
 				run_path, 
 				seed,
@@ -99,7 +100,7 @@ class ParamsModel:
 			self.after_run()
 
 		elif self.mask_image_model.image.get_value() != None:
-			self.diffusers_service.run_inpaint(
+			image = self.diffusers_service.run_inpaint(
 				run_path, 
 				self.seed.get_value(), 
 				self.ddim_steps, 
@@ -119,8 +120,12 @@ class ParamsModel:
 				lambda: self.after_run(),
 				embeddings = self.config.embeddings		
 				)		
+			base_count = len(os.listdir(out_dir))
+			path = os.path.join(out_dir, f"{base_count:05}-{seed}.png")
+			image.save(path)
+			self.after_run()
 		else:
-			self.diffusers_service.run_img2img(
+			image = self.diffusers_service.run_img2img(
 				run_path, 
 				self.seed.get_value(), 
 				self.ddim_steps, 
@@ -139,3 +144,8 @@ class ParamsModel:
 				lambda: self.after_run(),
 				embeddings = self.config.embeddings		
 				)		
+			base_count = len(os.listdir(out_dir))
+			path = os.path.join(out_dir, f"{base_count:05}-{seed}.png")
+			image.save(path)
+			self.after_run()
+			

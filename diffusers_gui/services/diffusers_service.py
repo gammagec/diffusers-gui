@@ -195,10 +195,7 @@ class DiffusersService:
 				strength = strength, 
 				generator = generator)["sample"][0]
 
-		base_count = len(os.listdir(out_dir))
-		path = os.path.join(out_dir, f"{base_count:05}-{seed}.png")
-		image.save(path)
-		after_run()
+			return image
 
 	def run_inpaint(self, out_dir, seed,
 		ddim_steps, n_samples, n_iter, prompt, ddim_eta, H, W,
@@ -245,8 +242,4 @@ class DiffusersService:
 				generator = generator,
 				guidance_scale = 7.5,
 				strength = strength)["sample"][0]		
-
-		base_count = len(os.listdir(out_dir))
-		path = os.path.join(out_dir, f"{base_count:05}-{seed}.png")
-		image.save(path)
-		after_run()
+			return image
