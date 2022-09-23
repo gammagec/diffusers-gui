@@ -10,6 +10,7 @@ import os, gc
 import PIL
 from PIL import Image
 import numpy as np
+from collections import OrderedDict
 
 from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
 
@@ -146,7 +147,7 @@ class DiffusersService:
 					width = W,
 					eta = ddim_eta,
 					num_inference_steps = ddim_steps,
-					guidance_scale = f
+					guidance_scale = scale
 				)["sample"][0]
 				return image
 
@@ -175,14 +176,18 @@ class DiffusersService:
 					tokenizer = self.tokenizer,
 					text_encoder = self.text_encoder,
 					safety_checker = self.safety_checker,
-					guidance_scale = f,
+					guidance_scale = scale,
+					width = W,
+					height = H,
 				)
 			else:
 				self.img2img_pipe = StableDiffusionImg2ImgPipeline.from_pretrained(
 					pretrained_model_path, revision="fp16", 
 					torch_dtype=torch.float16, use_auth_token=False,
 					safety_checker = self.safety_checker,
-					guidance_scale = f,
+					guidance_scale = scale,
+					width = W,
+					height = H,
 				)
 		gc.collect()
 		torch.cuda.empty_cache()

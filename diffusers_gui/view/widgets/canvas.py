@@ -16,7 +16,7 @@ class Canvas(View):
 	def update_image(self, val):
 		if self.is_created():
 			if val != None:
-				self.tk_image = ImageTk.PhotoImage(val)
+				self.tk_image = ImageTk.PhotoImage(val.resize((512, 512)))
 				self.render(self.tk_image)
 			else:
 				self.tk_image = None		

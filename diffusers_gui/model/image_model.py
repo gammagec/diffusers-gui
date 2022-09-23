@@ -45,13 +45,13 @@ class ImageModel(object):
 			print(f'loading image {path}')
 			img = Image.open(path)
 			(w, h) = img.size
-			if (w != 512 and h != 512):
-				if (w > h):
-					new_width = 512
-					new_height = int((new_width / w) * h)
-				else:
-					new_height = 512
-					new_width = int((new_height / h) * w)
-				img = img.resize((new_width, new_height))
-				img = resizeimage.resize_contain(img, [512, 512])
+			#if (w != 512 and h != 512):
+			#	if (w > h):
+			#		new_width = 512
+			#		new_height = int((new_width / w) * h)
+			#	else:
+			#		new_height = 512
+			#		new_width = int((new_height / h) * w)
+			#	img = img.resize((new_width, new_height))
+			#	img = resizeimage.resize_contain(img, [512, 512])
 			self.image.next(self.get_processed_image(img))

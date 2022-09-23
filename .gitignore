@@ -9,8 +9,11 @@ gfpgan/weights/parsing_parsenet.pth
 data/embeddings
 .vs
 config/local_config.yaml
+config/config_local.yaml
 node_modules
 app/.browserslistrc
 app/.editorconfig
 app/.gitignore
 app/.vscode
+my_concept
+openai

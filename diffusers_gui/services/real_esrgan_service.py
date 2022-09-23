@@ -40,6 +40,8 @@ class RealEsrganService():
 				bg_upsampler = self.upsampler)
 
 	def process(self, input):
+		if not self.upsampler:
+			self.initialize()
 		img = np.asarray(input) 
 		img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 		#if len(img.shape) == 3 and img.shape[2] == 4:
